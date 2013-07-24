@@ -1,0 +1,746 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"firs",
+				"first-child"
+			],
+			[
+				"col",
+				"color"
+			],
+			[
+				"remo",
+				"removeClass  (function)"
+			],
+			[
+				"togg",
+				"toggler"
+			],
+			[
+				"cl",
+				"class=  (attribute)"
+			],
+			[
+				"a",
+				"a	<a>"
+			],
+			[
+				"no",
+				"no-repeat"
+			],
+			[
+				"key",
+				"keyup"
+			],
+			[
+				"out",
+				"outline"
+			],
+			[
+				"bac",
+				"background-position"
+			],
+			[
+				"he",
+				"height"
+			],
+			[
+				"tra",
+				"transparent"
+			],
+			[
+				"ba",
+				"background"
+			],
+			[
+				"sp",
+				"special"
+			],
+			[
+				"con",
+				"content"
+			],
+			[
+				"clas",
+				"class"
+			],
+			[
+				"fon",
+				"font-family"
+			],
+			[
+				"fi",
+				"first-child  (pseudo-class)"
+			],
+			[
+				"ce",
+				"center"
+			],
+			[
+				"mia",
+				"main-nav"
+			],
+			[
+				"lis",
+				"list-style"
+			],
+			[
+				"le",
+				"left"
+			],
+			[
+				"logo",
+				"logo-text"
+			],
+			[
+				"app-",
+				"app-header-inner"
+			],
+			[
+				"fir",
+				"first-letter  (pseudo-class)"
+			],
+			[
+				"tit",
+				"title"
+			],
+			[
+				"nav",
+				"navbar"
+			],
+			[
+				"pos",
+				"position"
+			],
+			[
+				"fit",
+				"first-child  (pseudo-class)"
+			],
+			[
+				"mar",
+				"margin-left"
+			],
+			[
+				"texta",
+				"text-example"
+			],
+			[
+				"compo",
+				"component-title"
+			],
+			[
+				"com",
+				"component"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "css/modules.css",
+			"settings":
+			{
+				"buffer_size": 6528,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/Александр/AppData/Roaming/Sublime Text 2/Packages/User/Preferences.sublime-settings",
+			"settings":
+			{
+				"buffer_size": 121,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "faq.php",
+			"settings":
+			{
+				"buffer_size": 10780,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "js/main.js",
+			"settings":
+			{
+				"buffer_size": 2957,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "css/layout.css",
+			"settings":
+			{
+				"buffer_size": 9682,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "Packages/JSLint/JSLint.sublime-build",
+	"command_palette":
+	{
+		"height": 375.0,
+		"selected_items":
+		[
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"to spa",
+				"Indentation: Convert to Spaces"
+			],
+			[
+				"to spac",
+				"Indentation: Convert to Spaces"
+			],
+			[
+				"comb",
+				"Sort via CSScomb"
+			],
+			[
+				"forma",
+				"Format: Javascript"
+			],
+			[
+				"cssi",
+				"Csslisible : Run"
+			],
+			[
+				"disa",
+				"Package Control: Disable Package"
+			],
+			[
+				"remo",
+				"Package Control: Remove Package"
+			],
+			[
+				"packag",
+				"Package Control: Enable Package"
+			],
+			[
+				"codei",
+				"SublimeCodeIntel: Reset"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: ",
+				"Package Control: Enable Package"
+			],
+			[
+				"remov",
+				"Package Control: Remove Package"
+			],
+			[
+				"insta ",
+				"Package Control: Install Package"
+			],
+			[
+				"syn ht",
+				"Set Syntax: HTML5"
+			],
+			[
+				"lint",
+				"JSLint"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"to sp",
+				"Indentation: Convert to Spaces"
+			],
+			[
+				"align",
+				"Preferences: Alignment File Settings – Default"
+			],
+			[
+				"syn javs",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"tid",
+				"Tidy CSS"
+			],
+			[
+				"css",
+				"Tidy CSS"
+			],
+			[
+				"csst",
+				"Tidy CSS (Highest Compression)"
+			],
+			[
+				"cssli",
+				"Csslisible : Run"
+			],
+			[
+				"cssco",
+				"Sort via CSScomb"
+			],
+			[
+				"cssb",
+				"Sort via CSScomb"
+			],
+			[
+				"cssc",
+				"Sort via CSScomb"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"tidy",
+				"TidyHTML"
+			],
+			[
+				"ty",
+				"TidyHTML"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 522.0
+	},
+	"console":
+	{
+		"height": 272.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/D/Wamp/domains/enotus.loc/css/icons.css",
+		"/D/Wamp/domains/enotus.loc/js/main.js",
+		"/D/Wamp/domains/enotus.loc/js/plugins.js",
+		"/D/Wamp/domains/enotus.loc/main.php",
+		"/D/Wamp/domains/enotus.loc/index.html",
+		"/D/Wamp/domains/enotus.loc/404.php",
+		"/D/Wamp/domains/enotus.loc/css/layout.css",
+		"/D/Wamp/domains/enotus.loc/css/form.css",
+		"/D/Wamp/domains/enotus.loc/css/plugins.css",
+		"/D/Wamp/domains/enotus.loc/css/utils.css",
+		"/D/Wamp/domains/enotus.loc/css/buttons.css",
+		"/D/Wamp/domains/enotus.loc/css/main.css",
+		"/D/Wamp/domains/enotus.loc/css/normalize.css",
+		"/C/Users/Александр/Desktop/slider.html",
+		"/C/Users/Александр/Desktop/slider.css",
+		"/C/Users/Александр/Desktop/slider.js",
+		"/D/Wamp/domains/enotus.loc/css/modules.css",
+		"/D/Wamp/domains/enotus.loc/_header.php",
+		"/D/Wamp/domains/enotus.loc/_footer.php",
+		"/D/Wamp/domains/enotus.loc/_head.php",
+		"/C/Users/Александр/Desktop/bootstrap.min.js",
+		"/C/Users/Александр/Desktop/bootstrap.min.css",
+		"/D/Wamp/domains/enotus.loc/js/vendor/jquery.min.js",
+		"/C/Users/Александр/Desktop/bootstrap.css",
+		"/C/Users/Александр/Desktop/bootstrap.js",
+		"/D/Wamp/domains/boilerplate/css/dev/common.css",
+		"/D/Wamp/domains/enotus.loc/css/bootstrap.css",
+		"/D/Wamp/domains/enotus.loc/css/style.css",
+		"/D/Wamp/domains/boilerplate/css/dev/forms.css",
+		"/D/Wamp/domains/boilerplate/css/dev/buttons.css",
+		"/D/Wamp/domains/boilerplate/index.html",
+		"/D/Wamp/domains/boilerplate/css/dev/reset.css",
+		"/C/Users/Александр/AppData/Roaming/Sublime Text 2/Packages/Package Control/Package Control.sublime-settings",
+		"/C/Users/Александр/AppData/Roaming/Sublime Text 2/Packages/Default/Preferences.sublime-settings",
+		"/C/Users/Александр/AppData/Roaming/Sublime Text 2/Packages/User/Preferences.sublime-settings",
+		"/C/Users/Александр/AppData/Roaming/Sublime Text 2/Packages/SublimeCodeIntel/Default (Windows).sublime-keymap",
+		"/C/Users/Александр/AppData/Roaming/Sublime Text 2/Packages/AdvancedNewFile/README.md",
+		"/D/Wamp/domains/boilerplate/css/dev/demo.css",
+		"/D/Wamp/domains/boilerplate/css/dev/main.css",
+		"/C/Users/Александр/AppData/Roaming/Sublime Text 2/Packages/AdvancedNewFile/AdvancedNewFile.sublime-settings",
+		"/C/Users/Александр/AppData/Roaming/Sublime Text 2/Packages/AdvancedNewFile/Default (Windows).sublime-keymap",
+		"/C/Users/Александр/AppData/Roaming/Sublime Text 2/Packages/BracketHighlighter/BracketHighlighter.sublime-settings",
+		"/C/Users/Александр/AppData/Roaming/Sublime Text 2/Packages/User/BracketHighlighter.sublime-settings",
+		"/C/Users/Александр/AppData/Roaming/Sublime Text 2/Packages/Terminal/Base File.sublime-settings",
+		"/D/Wamp/domains/boilerplate/boilerplate.sublime-workspace",
+		"/D/Wamp/domains/boilerplate/boilerplate.sublime-project",
+		"/D/Wamp/domains/boilerplate/css/reset.css",
+		"/D/Wamp/domains/boilerplate/css/main.css",
+		"/D/Wamp/domains/boilerplate/css/demo.css",
+		"/D/Wamp/domains/boilerplate/css/common.css",
+		"/D/Wamp/domains/boilerplate/css/buttons.css",
+		"/C/Users/Александр/AppData/Roaming/Sublime Text 2/Settings/SideBarEnhancements.json",
+		"/C/Users/Александр/AppData/Roaming/Sublime Text 2/Packages/SideBarEnhancements/messages/11.13.2012.1305.0.txt",
+		"/C/Users/Александр/AppData/Roaming/Sublime Text 2/Packages/User/CSSTidy.sublime-settings",
+		"/C/Users/Александр/AppData/Roaming/Sublime Text 2/Packages/JsFormat/Default (Windows).sublime-keymap",
+		"/C/Users/Александр/AppData/Roaming/Sublime Text 2/Packages/CSScomb/Default (Windows).sublime-keymap",
+		"/C/Users/Александр/AppData/Roaming/Sublime Text 2/Packages/CSSLint/CSSLint.sublime-settings",
+		"/C/Users/Александр/AppData/Roaming/Sublime Text 2/Packages/SublimeLinter/SublimeLinter.sublime-settings",
+		"/C/Users/Александр/AppData/Roaming/Sublime Text 2/Packages/User/HtmlTidy.sublime-settings",
+		"/C/Users/Александр/AppData/Roaming/Sublime Text 2/Packages/HtmlTidy/HtmlTidy.sublime-settings",
+		"/C/Users/Александр/AppData/Roaming/Sublime Text 2/Packages/SublimeTidyHTML/TidyHTML.sublime-settings",
+		"/C/Users/Александр/AppData/Roaming/Sublime Text 2/Packages/User/SublimeLinter.sublime-settings",
+		"/C/Users/Александр/AppData/Roaming/Sublime Text 2/Packages/User/TidyHTML.sublime-settings",
+		"/C/Users/Александр/AppData/Roaming/Sublime Text 2/Packages/SublimeTidyHTML/Default (Windows).sublime-keymap"
+	],
+	"find":
+	{
+		"height": 38.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"404 [",
+			"requiredError",
+			"modal-btoom",
+			"#D9CCB8 0 3px 1px, ",
+			"#1A4876 0 3px 1px,",
+			"#1A4876 0 3px 1px, ",
+			"inset 0px 2px 3px 0px #608BB6, inset 1px 0px 3px 0px #39689F, inset -1px 0px 3px 0px #39689F, ",
+			", inset 0px -3px 4px #2F7EDB ",
+			", inset 0px -3px 4px #2F7EDB !important",
+			"prim",
+			"#6B4203 0 3px 1px,",
+			" #c4bab4 0 2px 10px, ",
+			" #6B4203 0 3px 1px,",
+			"#D9CCB8 0 3px 1px, ",
+			";\n",
+			"hoff voff radius color",
+			"email",
+			"ус<",
+			"Енотусе",
+			"8",
+			"375px",
+			"jpg",
+			"slideshow",
+			"id",
+			"#",
+			"slideshow",
+			"images",
+			"photos",
+			"h1",
+			"main-nav",
+			"nav",
+			"nv",
+			"logo",
+			"a {",
+			"a",
+			"body",
+			"5px 0 0 5px",
+			"ul",
+			"logo",
+			"prox",
+			"pro",
+			"prox",
+			"btn",
+			"color",
+			"lihe",
+			":"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 3,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "css/modules.css",
+					"settings":
+					{
+						"buffer_size": 6528,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5632,
+								5632
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 3047.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/C/Users/Александр/AppData/Roaming/Sublime Text 2/Packages/User/Preferences.sublime-settings",
+					"settings":
+					{
+						"buffer_size": 121,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								55,
+								55
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "faq.php",
+					"settings":
+					{
+						"buffer_size": 10780,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3379,
+								3379
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML5/Syntaxes/HTML 5.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1290.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "js/main.js",
+					"settings":
+					{
+						"buffer_size": 2957,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2957,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "css/layout.css",
+					"settings":
+					{
+						"buffer_size": 9682,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								813,
+								813
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 486.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 38.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.csslint_result_view":
+	{
+		"height": 132.0
+	},
+	"output.exec":
+	{
+		"height": 37.0
+	},
+	"replace":
+	{
+		"height": 0.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"lay",
+				"css/layout.css"
+			],
+			[
+				"main",
+				"js/main.js"
+			],
+			[
+				"lug",
+				"js/plugins.js"
+			],
+			[
+				"icon",
+				"css/icons.css"
+			],
+			[
+				"buttons",
+				"css/buttons.css"
+			],
+			[
+				"modul",
+				"css/modules.css"
+			],
+			[
+				"inc",
+				"css/icons.css"
+			],
+			[
+				"n",
+				"css/normalize.css"
+			],
+			[
+				"butt",
+				"css/dev/buttons.css"
+			],
+			[
+				"inde",
+				"index.html"
+			],
+			[
+				"comm",
+				"css/dev/common.css"
+			],
+			[
+				"form",
+				"css/dev/forms.css"
+			],
+			[
+				"rese",
+				"css/dev/reset.css"
+			],
+			[
+				"but",
+				"css/buttons.css"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 181.0,
+	"status_bar_visible": true
+}

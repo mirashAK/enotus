@@ -1,0 +1,58 @@
+/*
+    Utitlities [
+ */
+._block {
+    display: block !important;
+}
+._iblock {
+    display: inline-block !important;
+
+    *display: inline !important;
+    *zoom: 1;
+    *vertical-align: baseline;
+}
+._fleft {
+    float: left !important;
+}
+._fright {
+    float: right !important;
+}
+._ohidden {
+    overflow: hidden !important;
+}
+._tleft {
+    text-align: left !important;
+}
+._tcenter {
+    text-align: center !important;
+}
+._tright {
+    text-align: right !important;
+}
+._prel {
+    position: relative !important;
+}
+._nobr {
+    white-space: nowrap !important;
+}
+._unone {
+    text-decoration: none !important;
+}
+._dnone {
+    display: none !important;
+}
+._cfix:before,
+._cfix:after {
+    display: table;
+
+    content: " ";
+}
+._cfix:after {
+    clear: both;
+}
+._cfix {
+    *zoom: 1;
+}
+/*
+    ] Utitlities
+ */
