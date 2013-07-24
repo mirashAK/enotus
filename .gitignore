@@ -1,3 +1,9 @@
+*~
+*-swp
+*.orig
+.keepme
+/_sql_back
+/_backup
 */config/development
 */logs/log-*.php
 */logs/!index.html
