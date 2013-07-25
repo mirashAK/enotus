@@ -51,7 +51,7 @@
 
                             <!-- tab-content [ -->
                             <div class="tab-content">
-                                
+
 
                                 <!-- settings [ -->
                                 <div class="cabinet-settings">
@@ -63,7 +63,7 @@
                                                 это ваши персональные данные, необходимые для того, чтобы входить на сайт
                                             </p>
 
-                                            
+
                                             <div class="control-row">
                                                 <div class="control-cell">
                                                     <div>
@@ -85,13 +85,22 @@
                                                 </div>
                                             </div>
 
+                                            <div class="control-row">
+                                                <div class="control-cell">
+                                                    <label>
+                                                        Страна, в которой вы ведете деятельность:<br>
+                                                        <span class="change-country-row">Украина <a href="#">Хотите изменить страну?</a></span>
+                                                    </label>
+                                                </div>
+                                            </div>
+
 
                                             <div class="control-row change-pass-row">
                                                 <div class="controll-cell">
                                                     <a href="#modal-change-password" data-toggle="modal"><i class="icon icon-lock"></i><span>Изменить пароль</span></a>
                                                 </div>
                                             </div>
-                                            
+
 
                                             <div class="control-row">
                                                 <div class="control-cell">
@@ -198,7 +207,7 @@
                                                     <a href="#add-phone" id="add-phone" class="add-phone-link -dotted">Добавить телефон</a>
                                                 </div>
                                             </div>
-                                            
+
 
                                             <div class="control-row">
                                                 <div class="control-cell">

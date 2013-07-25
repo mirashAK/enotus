@@ -248,7 +248,12 @@ a:hover .icon-lock {
 .is-current .icon-journal {
     background-position: -910px 0;
 }
-
+.icon-choose-country {
+    background-position: -930px 0;
+    width: 12px;
+    height: 10px;
+    margin-left: 13px;
+}
 
 /*
     ] Icons

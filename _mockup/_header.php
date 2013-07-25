@@ -25,7 +25,11 @@
 
             <?php if (!$link_out) { ?>
             <div class="controlls-addition _prel">
-                <a href="mailto:enotus@enotus.com.ua"><i class="icon icon-email"></i>enotus@enotus.com.ua</a>
+                <div class="lang-switcher">
+                    <a href="#" class="is-current">РУ</a>
+                    <a href="#">УКР</a>
+                    <a href="#">EN</a>
+                </div>
 
 
                 <!-- registration/autorization [ -->

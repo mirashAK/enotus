@@ -34,15 +34,18 @@
                             <li class="is-current">База документов</li>
                         </ul>
 
-                        <h1 class="_fleft">База документов</h1>
+                        <h1 class="_fleft no-bottom">База документов</h1>
 
-                        <ul class="filters _fleft -in-heading">
+                        <ul class="filters _fright -in-heading">
                             <li class="is-active" data-role="filter" data-option="alphabet"><span>по алфавиту</span></li>
                             <li data-role="filter" data-option="popularity"><span >по популярности</span></li>
                             <li data-role="filter" data-option="availability"><span>доступные</span></li>
                         </ul>
 
+
                         <div class="_cfix"></div>
+
+                        <div class="base-sub-heading">показывать документы <a class="drop-link link-choose-country -open" href="#"><span class="title">для всех стран</span><i class="icon icon-choose-country"></i></a></div>
 
                         <div class="main-col">
 
@@ -374,6 +377,21 @@
             </form>
         </div>
         <!-- ] modal login -->
+
+        <!-- choose country block [ -->
+        <div class="choose-country-block">
+            <a class="drop-link link-choose-country -close" href="#"><span class="title">для всех стран</span><i class="icon icon-choose-country"></i></a>
+            <div class="explanation-text">
+                на сайте представлены образцы документов разных стран, выберите страну, для которой вы хотите видеть документы
+            </div>
+            <div class="country-list">
+                <a href="#c_0">для всех стран</a>
+                <a href="#c_1">для Украины</a>
+                <a href="#c_2">для России</a>
+                <a href="#c_3">для Европы</a>
+            </div>
+        </div>
+        <!-- ] choose country block -->
 <!-- ===========================================================================
     END OF HIDDEN CONTENT
     ======================================================================== -->
@@ -383,6 +401,61 @@
         <script src="js/vendor/jquery.min.js"></script>
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>
+
+        <script>
+            $(function() {
+                var chooseCountry = function() {
+                    var leftOffset,
+                        topOffset,
+                        originalLeftOffset,
+                        originalTopOffset,
+                        linkOpen = $('.link-choose-country.-open'),
+                        linkClose = $('.link-choose-country.-close');
+
+                    linkOpen.on('click', function(event) {
+                        event.preventDefault();
+
+                        var newWidth = linkOpen.width();
+
+                        originalLeftOffset = linkOpen.offset().left;
+                        originalTopOffset = linkOpen.offset().top;
+
+                        leftOffset = originalLeftOffset - 11;
+                        topOffset = originalTopOffset;
+
+                        $('.choose-country-block').css({
+                            left: leftOffset,
+                            top: topOffset,
+                            width: newWidth
+                        }).show();
+                    });
+
+                    linkClose.on('click', function(event) {
+                        event.preventDefault();
+
+                        $(this).closest('.choose-country-block').hide();
+                    });
+
+                    $('.choose-country-block .country-list a').on('click', function(event) {
+                        event.preventDefault();
+
+                        var link = $(this),
+                            text = link.text(),
+                            newWidth;
+
+                        linkClose.find('.title').text(text);
+                        linkOpen.find('.title').text(text);
+                        newWidth = linkOpen.width();
+
+                        link.closest('.choose-country-block').css({
+                            width: newWidth
+                        }).hide();
+                        // SEND AJAX
+                    });
+                };
+                chooseCountry();
+            });
+        </script>
         <!-- ] js -->
     </body>
 </html>

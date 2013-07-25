@@ -3,6 +3,7 @@
     - defaults
     - error
     - checkable
+    - placeholder
  */
 
 
@@ -48,13 +49,13 @@ label {
     line-height: 15px;
     padding: 9px 14px;
     margin-top: 4px;
-    color: #371500;
+    color: #3d0d00;
     font-family: "Open Sans", Arial, Helvetica, sans-serif;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     -o-border-radius: 5px;
     border-radius: 5px;
-    border: 1px solid #cbbb9f;
+    border: 1px solid #d2bc9f;
     -webkit-box-shadow: inset 0px 2px 1px 0px #efefef;
     -moz-box-shadow: inset 0px 2px 1px 0px #efefef;
     -o-box-shadow: inset 0px 2px 1px 0px #efefef;
@@ -71,7 +72,7 @@ label {
 .control-cell input[type="email"]:focus,
 .control-cell input[type="password"]:focus,
 .control-cell textarea:focus {
-    border-color: #336699;
+    border-color: #00669c;
 }
 .control-cell input + a {
     margin-left: 10px;
@@ -177,6 +178,40 @@ input[type="radio"] {
 }
 /* ] checkable */
 
+
+/* placeholder [ */
+::-webkit-input-placeholder {
+   color: #6a4d3f;
+   line-height: 12px;
+   padding-top: 4px;
+   font-weight: 300;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   color: #6a4d3f;
+   line-height: 18px;
+   padding-top: 4px;
+   font-weight: 300;
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   color: #6a4d3f;
+   line-height: 18px;
+   padding-top: 4px;
+   font-weight: 300;
+}
+
+:-ms-input-placeholder {
+   color: #6a4d3f;
+   line-height: 12px;
+   padding-top: 4px;
+   font-weight: 300;
+}
+.placeholder {
+    color: #6a4d3f !important;
+    font-weight: 300;
+}
+/* ] placeholder */
 
 /*
     ] Form

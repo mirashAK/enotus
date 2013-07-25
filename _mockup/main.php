@@ -40,6 +40,10 @@
                             </div>
 
                             <div class="carousel-text">
+                                <span class="prepend-text">
+                                    Новое событие на сайте
+                                </span>
+
                                 <div class="carousel-heading">
                                     На <div class="logo-text _iblock">Eнотусе</div> появился новый <a href="#">тарифный пакет</a> для групповой работы
                                 </div>
@@ -55,12 +59,16 @@
                             </div>
 
                             <div class="carousel-text">
+                                <span class="prepend-text">
+                                    Что это за сервис?
+                                </span>
+
                                 <div class="carousel-heading">
-                                    На <div class="logo-text _iblock">Eнотусе</div> появился новый <a href="#">тарифный пакет</a> для групповой работы
+                                    <div class="logo-text _iblock">Eнотус</div> &mdash; это сайт, позволяющий создавать документы он-лайн
                                 </div>
 
                                 <p>
-                                    Теперь сервис стал еще удобнее. Новый тариф позволяет создать работать группе сотрудников, позволяет запоминать контрагентов. Цена пакета демократичная и умеренная.
+                                    База сайта содержит образцы полезных и нужных документов, которые могут существенно упростить работу предпринимателей самостоятельно занимающихся ведением дел.
                                 </p>
                             </div>
                         </div>
@@ -70,6 +78,10 @@
                             </div>
 
                             <div class="carousel-text">
+                                <span class="prepend-text">
+                                    Внимание! Акция!
+                                </span>
+
                                 <div class="carousel-heading">
                                     На <div class="logo-text _iblock">Eнотусе</div> появился новый <a href="#">тарифный пакет</a> для групповой работы
                                 </div>
@@ -173,6 +185,19 @@
                     <div class="control-row">
                         <div class="control-cell">
                             <label>
+                                Страна, в которой вы ведете деятельность<i class="field-mark">*</i>:<br>
+                            </label>
+                            <select name="deal_country" id="deal-country">
+                                <option value="1" selected>Украина</option>
+                                <option value="2">Россия</option>
+                                <option value="3">Белоруссия</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="control-row">
+                        <div class="control-cell">
+                            <label>
                                 Как вы хотите, чтобы мы обращались к вам в письмах:<br>
                                 <input type="text" name="fullname" id="fullname" class="text fullname" value="Евгения Александровна">
                             </label>
@@ -263,6 +288,10 @@
         <script src="js/vendor/jquery.min.js"></script>
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>
+
+        <script>
+            $('#deal-country').select2();
+        </script>
         <!-- ] js -->
     </body>
 </html>

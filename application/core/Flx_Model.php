@@ -452,7 +452,6 @@ class Flx_Model extends CI_Model
     if (!empty($first_result) && $first_result->num_rows() == 1)
     {
       $final_result = array();
-     //$final_result['r_only'] = true;
       // Получаем результат запроса стандартным методом CI
       $first_result = $first_result->row_array();
       
@@ -523,5 +522,29 @@ class Flx_Model extends CI_Model
     }
     $this->_clear_results();
     return false;
+  }
+  
+  public function check_unique ($table, $condition)
+  {
+    $sql = 'CALL check_uniq(?,?)';
+    
+    $result_condition = '';
+    
+    foreach($condition as $field=>$value)
+      $result_condition .= '`'.$field."` = '".$value."' AND ";
+    
+    $result_condition = substr ($result_condition, 0, strlen($result_condition)-5);
+    
+    $first_result = $this->db->query($sql, array($table, $result_condition));
+    
+    if (!empty($first_result) && $first_result->num_rows() == 1)
+    {
+      $first_result = $first_result->row_array();
+      $first_result = (bool)$first_result['is_uniq'];
+    }
+    else $first_result = false;
+    
+    $this->_clear_results();
+    return $first_result;
   }
 } 

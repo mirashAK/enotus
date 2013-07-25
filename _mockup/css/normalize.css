@@ -73,7 +73,7 @@ html {
 
 body {
     margin: 0;
-    color: #432a19;
+    color: #492511;
     font: 14px/1.3 "Open Sans", Arial, Helvetica, sans-serif;
     background: #f5f4f0 url(../img/app-bg.jpg);
 }
@@ -87,7 +87,7 @@ body {
  */
 a:link,
 a:visited {
-  color: #369;
+  color: #00669c;
 }
 
 a:focus {
