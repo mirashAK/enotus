@@ -15,22 +15,22 @@ class Flx_User extends Flx_Model
     else return false;
   }
     
-  public function add_user($email, $pass, $login = '')
+  public function add_user($email, $pass, $login = '', $user_data='')
   {
-    $sql = "SELECT add_user (?,?,?) AS 'get_params' ;";
-    $first_result = $this->db->query($sql, array($login, $email, $pass));
+    $sql = "SELECT add_user (?,?,?,?) AS 'token' ;";
+    $first_result = $this->db->query($sql, array($login, $email, $pass, $user_data));
     
     if (!empty($first_result) && $first_result->num_rows() == 1)
     {
       $first_result = $first_result->row_array();
-      return $first_result['get_params'];
+      return $first_result['token'];
     }
     else return false;
   }
   
   public function reg_user(&$user, $reg_token)
   {
-    $sql = "SELECT reg_user (?,?,?) AS 'new_token' ;";
+    $sql = "SELECT reg_user (?,?,?) AS 'answer';";
     if (!empty($user))
       $first_result = $this->db->query($sql, array($reg_token, $user->user_ip, $user->user_token));
     else
@@ -40,9 +40,29 @@ class Flx_User extends Flx_Model
     {
       // Получаем результат запроса стандартным методом CI
       $first_result = $first_result->row_array();
-      return $first_result['new_token'];
+      $first_result = json_decode($first_result['answer'], true);
+      
+      if (array_key_exists('error_code', $first_result)) return $first_result['error_code'];
+      else return $first_result;
     }
     else return false;
+  }
+  
+  public function save_public_user ($token, $ip, $id, $data)
+  {
+    $tmp_user = new stdClass();
+    $tmp_user->user_token = $token;
+    $tmp_user->user_ip = $ip;
+    
+    $data['u_f_user_id'] = $id;
+    $result_data = '';
+
+    foreach($data as $key=>$value)
+    $result_data .= '\"'.$key.'\":\"'.$value.'\",';
+    
+    $this->save_table_custom($tmp_user, 'public_users', $result_data);
+    
+    var_export($this->db->last_query());
   }
   
   public function token_passwd($user_email)

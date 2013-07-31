@@ -83,6 +83,7 @@ html, body {
 .main-nav-list {
     font-size: 0;
     line-height: 0;
+    width: 636px;
 }
 .main-nav-item {
     display: inline-block;
@@ -135,27 +136,16 @@ html, body {
     -o-border-radius: 0 5px 5px 0;
     border-radius: 0 5px 5px 0;
 }
-.main-nav-item.-item-1 {
-    width: 160px;
-}
-.main-nav-item.-item-2 {
-    width: 102px;
-}
-.main-nav-item.-item-3 {
-    width: 82px;
-}
-.main-nav-item.-item-4 {
-    width: 66px;
-}
-.main-nav-item.-item-5 {
-    width: 218px;
-}
+
+.main-nav-list .last {width: 217px;}
+
 .main-nav-item > a {
     text-decoration: none;
     color: #3d0d00;
     display: block;
     height: 100%;
     position: relative;
+    padding: 0 14px;
 
     background: #f8f7f6;
     background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2Y4ZjdmNiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjMzJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUxJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjcyJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9Ijg3JSIgc3RvcC1jb2xvcj0iI2Y2ZjRmMyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlOGUyZTEiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
@@ -269,20 +259,9 @@ html, body {
     font-size: 14px;
     line-height: 14px;
 }
-.second-nav-item.-item-1 {
-    width: 160px;
-}
-.second-nav-item.-item-2 {
-    width: 102px;
-}
-.second-nav-item.-item-3 {
-    width: 82px;
-}
-.second-nav-item.-item-4 {
-    width: 66px;
-}
-.second-nav-item.-item-5 {
-    width: 218px;
+
+.second-nav-item > a {
+    padding: 0 18px;
 }
 /* } common */
 

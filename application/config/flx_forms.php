@@ -7,8 +7,9 @@ $config['flx_auth_form'] = array (
         );
         
 $config['flx_reg_form'] = array (
-          'type'    =>array('user_email'=>'email', 'user_pass'=>'pass', 'user_re_pass'=>'re_pass'),
+          'type'    =>array('user_email'=>'email', 'user_pass'=>'pass'),
           'require' =>array('user_email', 'user_pass'),
+          'r_only' =>array('user_pass'),
           'unique' =>array('user_email'),
         );
 

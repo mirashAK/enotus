@@ -29,15 +29,16 @@ class User_lib
     else return $this->flx_user_mdl->get_error_text($new_token, 'flx_do_auth');
   }
   
-  public function add_user ($email, $pass, $login = '')
+  public function add_user ($email, $pass, $login = '', $user_data = array())
   {
     $pass = $this->_encrypt_pass($pass);
-    $get_params = $this->flx_user_mdl->add_user($email, $pass, $login);
-    if ($this->flx_user_mdl->check_error($get_params, 'flx_add_user') == true)
+    $user_data = $this->encrypt->encode(json_encode($user_data));
+    $token = $this->flx_user_mdl->add_user($email, $pass, $login, $user_data);
+    if ($this->flx_user_mdl->check_error($token, 'flx_add_user') == true)
     {
-      return $get_params;
+      return $token;
     }
-    else return $this->flx_user_mdl->get_error_text($new_token, 'flx_add_user');
+    else return $this->flx_user_mdl->get_error_text($token, 'flx_add_user');
   }
   
   public function reg_user ()
@@ -45,15 +46,22 @@ class User_lib
     $token = $this->input->get('token');
     if (!empty($token))
     {
-      $new_token = $this->flx_user_mdl->reg_user($this, $token);
-      if ($this->flx_user_mdl->check_error($new_token, 'flx_reg_user') == true)
+      $result = $this->flx_user_mdl->reg_user($this, $token);
+      
+      if (!is_array($result) && $this->flx_user_mdl->check_error($result, 'flx_reg_user') == false)
+        $this->flx_user_mdl->get_error_text($new_token, 'flx_reg_user');
+      else 
       {
-        $this->user_session->sess_token = $new_token;
-        $this->input->set_cookie('user_token', $new_token, 31536000);
+        $this->user_session->sess_token = $result['user_token'];
+        $this->input->set_cookie('user_token', $result['user_token'], 31536000);
         $this->_set_values();
+        
+        if (array_key_exists('user_id', $result))
+        { // Insert data into public_users table
+          $this->flx_user_mdl->save_public_user($result['user_token'], $this->user->user_ip, $result['user_id'], json_decode($this->encrypt->decode($result['user_data']),true));
+        }
         return true;
       }
-      else $this->flx_user_mdl->get_error_text($new_token, 'flx_reg_user');
     }
     else return false;
   }

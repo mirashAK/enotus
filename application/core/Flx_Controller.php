@@ -118,22 +118,14 @@ class Front_Controller extends Default_Controller
       $this->lang->load('site/forms', lang());
       $this->view_data['lang'] = $this->lang->language;
       $this->view_data['language'] = lang();
-      
-      $this->load->model('users_mdl');
-      
+
       $this->view_data['site_title'] = '';
       $this->view_data['site_metadata'] = '';
       $this->view_data['site_metadata_description'] = '';
       $this->view_data['site_metadata_keywords'] = '';
       
-      // tmp vars_defs
-      $this->view_data['link_out'] = false;
-      $this->view_data['auth'] = false;
-      $this->view_data['tariff'] = 'ok';
-      $this->view_data['current'] = 1;
-      
-      $this->view_data['site_header'] = $this->parse_in(lang().'/header_view');
-      $this->view_data['site_footer'] =  $this->parse_in(lang().'/footer_view');
+      $this->view_data['site_header'] = '';
+      $this->view_data['site_footer'] =  '';
       $this->view_data['site_body'] = '';
       
       $this->view_data['res_js'] = res_url('assets/js/');

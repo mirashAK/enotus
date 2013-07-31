@@ -1,9 +1,149 @@
-/**
- * Clientside-validation
- * @wrapper, @errorPlace - html elements
- * @errors - object with strings
- * @regexps - object with regular expressions
- */
+
+(function ($) {
+  'use strict';
+
+  window.App = window.App || {};
+
+  /**
+   * Определение отправщика формы
+   */
+  App.Forms_sender = function(form_data)
+  {
+    var form = $('form[name="'+form_data.form_name+'"]');
+
+    // Служебка для проверки результата работы $ find(), чтобы знать, когда элемент не найден
+    var check_result = function (result)
+    {
+      if (result.length === 0) { return false; }
+      else { return result; }
+    };
+
+    $(form).on('submit', function (e)
+    {
+      e.preventDefault();
+
+      // Формируем данные для отправки, чтобы они передавались как единственный параметр
+      var data = {};
+      data[form.attr('name')] = form.serialize();
+
+      // Адрес action формируется в контроллере при создании формы и выводится во view шаблона формы
+      var url = form.attr('action');
+
+      // Контейнер используем для замены его содержимого кодом HTML, сформированным после обработки формы
+      var reload_container = form_data.reload_container || '.'+form.attr('name')+'_reload_container';
+      reload_container = check_result(form.parents(reload_container).first()) || false;
+
+      var before_send = form_data.before_send || function(){};
+      var after_send = form_data.after_send || function(){};
+      var success_send = form_data.success_send || function(){};
+
+      // Ajax sending
+      $.ajax (
+      {
+        url: url,
+        type: 'post',
+        dataType: 'json',
+        data: data,
+        beforeSend: function ( xhr ) { before_send (form, xhr); },
+        success: function(answer)
+        {
+          if (answer.valid === true)
+          {
+            // Сервер в ответе выдаёт либо адрес редиректа
+            if (answer.redirect !== false) { window.location = answer.redirect; }
+            //  либо код HTML, который нужно поместить на место формы (в reload_container)
+            else if (answer.view !== false && reload_container) {
+              reload_container.html(answer.view);
+            }
+
+            success_send(form);
+          }
+          else
+          {
+            for ( var name in answer.errors )
+            {
+              if ( answer.errors.hasOwnProperty(name) ) {
+                // Имена элементов массива с ошибками соответствуют либо name поля ввода либо его id
+                var elem = check_result(form.find('[name="'+name+'"]')) || check_result(form.find('#'+name));
+                if (elem && form_data.on_error)
+                {
+                  form_data.on_error(elem, answer.errors[name]);
+                  elem.on('keypress', form_data.on_key_press);
+                }
+              }
+            }
+          }
+        },
+        error: function(e)
+        {
+          console.log("error"+e);
+
+          // demo
+          if (url === '#') {
+            setTimeout(function() {
+              success_send(form);
+            }, 800);
+          }
+        }
+      }).always(function() { after_send (form); });
+    });
+  };
+
+    var wrapper = $('<div class="form-error-wrap"></div>');
+    var errorPlace = $('<div class="form-error"></div>');
+ 
+  App.Forms_sender(
+  {
+    form_name: 'auth_form',
+    reload_container: '#modal-registration',
+    on_key_press: function (event) { $(event.target).removeClass('error'); },
+    on_error: function (elem, errors)
+    {
+      elem.wrap(wrapper).after(errorPlace.clone().html(errors));
+      elem.attr('data-valid', "false");
+    },
+    before_send: function (form, xhr)
+    {
+      form.find("input[type='password'], input[type='text'], input[type='email']").each(function()
+      {
+        if($(this).next('.form-error').length)
+        {
+          $(this).next('.form-error').remove();
+          $(this).unwrap('.form-error-wrap');
+          $(this).removeAttr('data-valid');
+        }
+      });
+    },
+    after_send: function (form) { }
+  });
+    
+  App.Forms_sender(
+  {
+    form_name: 'reg_form',
+    reload_container: '#modal-registration',
+    on_key_press: function (event) { $(event.target).removeClass('error'); },
+    on_error: function (elem, errors)
+    {
+      elem.wrap(wrapper).after(errorPlace.clone().html(errors));
+      elem.attr('data-valid', "false");
+    },
+    before_send: function (form, xhr)
+    {
+      form.find("input[type='password'], input[type='text'], input[type='email']").each(function()
+      {
+        if($(this).next('.form-error').length)
+        {
+          $(this).next('.form-error').remove();
+          $(this).unwrap('.form-error-wrap');
+          $(this).removeAttr('data-valid');
+        }
+      });
+    },
+    after_send: function (form) { }
+  });
+
+})(jQuery);
+// ---------------------------------------------------------------------
 var jsValidation = function() {
     var
         wrapper = $('<div class="form-error-wrap"></div>'),
@@ -91,7 +231,7 @@ var jsValidation = function() {
         }
     });
 };
-jsValidation();
+// jsValidation();
 
 
 /**

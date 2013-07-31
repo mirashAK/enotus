@@ -40,7 +40,7 @@ class Flx_Model extends CI_Model
   {
     $sql = 'CALL get_table(?,?,?,?,?,?)';
 
-   // var_export(array($user->user_token, $user->user_ip, $table, $where, $order, $limit)); echo('<br/>');
+    //var_export(array($user->user_token, $user->user_ip, $table, $where, $order, $limit)); echo('<br/>');
     
     return $this->db->query($sql, array($user->user_token, $user->user_ip, $table, $where, $order, $limit));
     
@@ -75,9 +75,9 @@ class Flx_Model extends CI_Model
       {
         $final_result['type'][$key] = $value['type'];
         $final_result['caption'][$key] = $value['caption'];
-        $final_result['r_only'][$key] = (bool)$value['r_only'];
-        $final_result['require'][$key] = (bool)$value['require'];
-        $final_result['unique'][$key] = (bool)$value['unique'];
+        $final_result['r_only'][$key] = $value['r_only'];
+        $final_result['require'][$key] = $value['require'];
+        $final_result['unique'][$key] = $value['unique'];
       }
       
       // А теперь самое интересное - начинаем работать напрямую с методами mysqli
@@ -93,7 +93,7 @@ class Flx_Model extends CI_Model
           // Дозаполним результирующий массив значениями
           foreach ($second_result as $key=>$value)
           {
-            if ($key == 'r_only') $final_result['value'][$key] = (bool)$value;
+            if ($key == 'r_only') $final_result['value'][$key] = $value;
             else $final_result['value'][$key] = $value;
           }
         }
@@ -157,9 +157,9 @@ class Flx_Model extends CI_Model
       {
         $final_result['type'][$key] = $value['type'];
         $final_result['caption'][$key] = $value['caption'];
-        $final_result['r_only'][$key] = (bool)$value['r_only'];
-        $final_result['require'][$key] = (bool)$value['require'];
-        $final_result['unique'][$key] = (bool)$value['unique'];
+        $final_result['r_only'][$key] = $value['r_only'];
+        $final_result['require'][$key] = $value['require'];
+        $final_result['unique'][$key] = $value['unique'];
       }
       
       // А теперь самое интересное - начинаем работать напрямую с методами mysqli
@@ -177,7 +177,7 @@ class Flx_Model extends CI_Model
           while ($row_result = mysqli_fetch_assoc($second_result))
           {
             $row_result['position'] = CONST_POS_MIDDLE;
-            $row_result['r_only'] = (bool)$row_result['r_only'];
+            $row_result['r_only'] = $row_result['r_only'];
             if ($array_counter == 0) $row_result['position'] = CONST_POS_FIRST;
             $array_counter = array_push ($final_result['values'],$row_result);
           }
@@ -252,9 +252,9 @@ class Flx_Model extends CI_Model
       {
         $final_result['type'][$key] = $value['type'];
         $final_result['caption'][$key] = $value['caption'];
-        $final_result['r_only'][$key] = (bool)$value['r_only'];
-        $final_result['require'][$key] = (bool)$value['require'];
-        $final_result['unique'][$key] = (bool)$value['unique'];
+        $final_result['r_only'][$key] = $value['r_only'];
+        $final_result['require'][$key] = $value['require'];
+        $final_result['unique'][$key] = $value['unique'];
       }
       
       // Преобразуем в объект
@@ -277,7 +277,7 @@ class Flx_Model extends CI_Model
           // Дозаполним результирующий массив значениями
           foreach ($second_result as $key=>$value)
           {
-            if ($key == 'r_only') $final_result['value'][$key] = (bool)$value;
+            if ($key == 'r_only') $final_result['value'][$key] = $value;
             else $final_result['value'][$key] = $value;
           }
           $final_result['value'] = (object)$final_result['value'];
@@ -315,7 +315,7 @@ class Flx_Model extends CI_Model
       }
       
       $this->_clear_results();
-      $final_result['dict'] = (object)$final_result['dict'];
+      if (array_key_exists('dict', $final_result)) $final_result['dict'] = (object)$final_result['dict'];
       return (object)$final_result;
     }
     $this->_clear_results();
@@ -346,9 +346,9 @@ class Flx_Model extends CI_Model
         $final_result['type'][$key] = $value['type'];
         $final_result['caption'][$key] = $value['caption'];
         $final_result['r_only'][$key] = $value['r_only'];
-        $final_result['r_only'][$key] = (bool)$value['r_only'];
-        $final_result['require'][$key] = (bool)$value['require'];
-        $final_result['unique'][$key] = (bool)$value['unique'];
+        $final_result['r_only'][$key] = $value['r_only'];
+        $final_result['require'][$key] = $value['require'];
+        $final_result['unique'][$key] = $value['unique'];
       }
       // Преобразуем в объект
       $final_result['type'] = (object)$final_result['type'];
@@ -372,7 +372,7 @@ class Flx_Model extends CI_Model
           while ($row_result = mysqli_fetch_assoc($second_result))
           {
             $row_result['position'] = CONST_POS_MIDDLE;
-            $row_result['r_only'] = (bool)$row_result['r_only'];
+            $row_result['r_only'] = $row_result['r_only'];
             if ($array_counter == 0) $row_result['position'] = CONST_POS_FIRST;
             $array_counter = array_push ($final_result['values'], (object)$row_result);
           }
@@ -424,7 +424,7 @@ class Flx_Model extends CI_Model
         }
       }
         $this->_clear_results();
-        $final_result['dict'] = (object)$final_result['dict'];
+        if (array_key_exists('dict', $final_result)) $final_result['dict'] = (object)$final_result['dict'];
         return (object)$final_result;
     }
     $this->_clear_results();
@@ -464,9 +464,9 @@ class Flx_Model extends CI_Model
       {
         $final_result['type'][$key] = $value['type'];
         $final_result['caption'][$key] = $value['caption'];
-        $final_result['r_only'][$key] = (bool)$value['r_only'];
-        $final_result['require'][$key] = (bool)$value['require'];
-        $final_result['unique'][$key] = (bool)$value['unique'];
+        $final_result['r_only'][$key] = $value['r_only'];
+        $final_result['require'][$key] = $value['require'];
+        $final_result['unique'][$key] = $value['unique'];
         $final_result['value'][$key] = '';
       }
       
@@ -517,6 +517,21 @@ class Flx_Model extends CI_Model
       if ($form->is_new) $first_result = $this->db->query($sql, array($user->user_token, $user->user_ip, $table, $serialized_values, ''));
       else $first_result = $this->db->query($sql, array($user->user_token, $user->user_ip, $table, $serialized_values, $where));
       //if (!empty($first_result) && $first_result->num_rows() == 1)
+      $this->_clear_results();
+      return true;
+    }
+    $this->_clear_results();
+    return false;
+  }
+  
+  public function save_table_custom (&$user, $table, $data, $where = '')
+  {
+    $sql = 'CALL set_table(?,?,?,?,?)';
+    
+    if (!empty($data))
+    {
+      $first_result = $this->db->query($sql, array($user->user_token, $user->user_ip, $table, $data, $where));
+
       $this->_clear_results();
       return true;
     }

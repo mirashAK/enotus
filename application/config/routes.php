@@ -41,6 +41,12 @@
 $route['default_controller'] = "main";
 $route['404_override'] = '';
 
+$route['auth'] = "auth";
+$route['auth/(:any)'] = 'auth/$1';
+
+$route['home'] = "main";
+$route['(:any)'] = 'main/$1';//'static_pages/$1';
+
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

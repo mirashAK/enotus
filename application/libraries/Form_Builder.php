@@ -35,7 +35,7 @@ class Form_Builder
       $form = new Flx_Custom_Form ();
       $form->name = $flx_form_name;
       $form->action = $flx_form_action;
-      $form->get_data_array($config);
+      $form->get_config($config);
     }
     return $form;
   }
@@ -82,14 +82,17 @@ class Form_Builder
   }
   
   public function get_data_array($provided_data = null)
-  {    
+  {
+    //var_export($provided_data);echo('<br/>');echo('<br/>');
     $xhr_request = array();
     if (!empty($provided_data))
     {
       if (is_array($provided_data) && !array_key_exists('value', $provided_data))        
         $provided_data = array('value'=>$provided_data);
-
-      $this->form_data = array_merge($this->form_data, $provided_data);
+      
+      foreach ($provided_data as $key=>$value)
+        if (array_key_exists($key, $this->form_data) && is_array($provided_data[$key])) $this->form_data[$key] = array_merge($this->form_data[$key], $provided_data[$key]);
+        else $this->form_data[$key] = $provided_data[$key];
 
       $is_xhr_request = $this->CI->input->is_ajax_request();
       if ($is_xhr_request == true) parse_str($this->CI->input->post($this->form_data['form']['name']), $xhr_request);
@@ -116,7 +119,7 @@ class Form_Builder
       if(!empty($provided_data['is_new'])) $this->form_data['is_new'] = $provided_data['is_new'];
       else $this->form_data['is_new'] = false;
     }
-     //var_export($this->form_data);
+    //var_export($this->form_data); echo('<br/>');echo('<br/>');
   }
   
   public function get_data_object($provided_data = null)
@@ -260,7 +263,7 @@ class Form_Builder
     if (!empty($view_data)) $this->form_data = array_merge($this->form_data, $view_data);
     $view_string = '';
     // Пропарсим view на предмет вывода справочника
-    if (!empty($this->form_data['dict']))
+    if (!empty($this->form_data['dict']) && !empty($view_name))
     {
       $l_d = $this->CI->parser->l_delim;
       $r_d = $this->CI->parser->r_delim;
@@ -369,7 +372,6 @@ class Form_Builder
   public function get_values()
   {
     $result = '';
-    
     foreach ($this->form_data['value'] as $key => $value)
       if ($key !== 'r_only' && $key !== 'owner' && array_key_exists($key, $this->form_data['type']))
         if ($this->form_data['r_only'][$key] !== true)
@@ -395,23 +397,20 @@ class Flx_Custom_Form extends Form_Builder
     parent::__construct();
   }
  
-  public function get_data_array($provided_data = null)
+  public function get_config($config_data = null)
   {
-    $prepared_arr = array ();
-    
-    if (isset($provided_data['type']))
-      foreach ($provided_data['type'] as $field=>$field_type)
+    if (isset($config_data['type']))
+      foreach ($config_data['type'] as $field=>$field_type)
       {
         $prepared_arr['type'][$field] = $field_type;
-        $prepared_arr['caption'][$field] = (isset($provided_data['caption'][$field])) ? $provided_data['caption'][$field] : $field;
-        $prepared_arr['require'][$field] = (isset($provided_data['require']) && in_array($field, $provided_data['require'])) ? true : false;
-        $prepared_arr['unique'][$field] = (isset($provided_data['unique']) && in_array($field, $provided_data['unique'])) ? true : false;
-        $prepared_arr['value'][$field] = (isset($provided_data['value'][$field])) ? $provided_data['value'][$field] : '';
-        $prepared_arr['r_only'][$field] = (isset($provided_data['r_only'][$field])) ? $provided_data['r_only'][$field] : false;
-        if (isset($provided_data['dict'][$field])) $prepared_arr['dict'][$field] = $provided_data['dict'][$field];
+        $prepared_arr['caption'][$field] = (isset($config_data['caption'][$field])) ? $config_data['caption'][$field] : $field;
+        $prepared_arr['require'][$field] = (isset($config_data['require']) && in_array($field, $config_data['require'])) ? true : false;
+        $prepared_arr['unique'][$field] = (isset($config_data['unique']) && in_array($field, $config_data['unique'])) ? true : false;
+        $prepared_arr['value'][$field] = (isset($config_data['value'][$field])) ? $config_data['value'][$field] : '';
+        $prepared_arr['r_only'][$field] = (isset($config_data['r_only']) && in_array($field, $config_data['r_only'])) ? true : false;
+        if (isset($config_data['dict'][$field])) $prepared_arr['dict'][$field] = $config_data['dict'][$field];
       }
-    else $prepared_arr = $provided_data;
-    
-    parent::get_data_array($prepared_arr);
+    $this->get_data_array($prepared_arr);
   }
+  
 }
