@@ -17,13 +17,17 @@ class Flx_User extends Flx_Model
     
   public function add_user($email, $pass, $login = '', $user_data='')
   {
-    $sql = "SELECT add_user (?,?,?,?) AS 'token' ;";
+    $sql = "SELECT add_user (?,?,?,?) AS 'answer' ;";
     $first_result = $this->db->query($sql, array($login, $email, $pass, $user_data));
     
     if (!empty($first_result) && $first_result->num_rows() == 1)
     {
+      // Получаем результат запроса стандартным методом CI
       $first_result = $first_result->row_array();
-      return $first_result['token'];
+      $first_result = json_decode($first_result['answer'], true);
+      
+      if (array_key_exists('error_code', $first_result)) return $first_result['error_code'];
+      else return $first_result['confirm_token'];
     }
     else return false;
   }

@@ -1,9 +1,8 @@
-
 (function ($) {
   'use strict';
 
   window.App = window.App || {};
-
+  
   /**
    * Определение отправщика формы
    */
@@ -17,6 +16,25 @@
       if (result.length === 0) { return false; }
       else { return result; }
     };
+    
+    var prep_form_data = function (form)
+    {
+      var a = [];
+      $(form).
+      find("input[type='checkbox']:checked, input[type='file'], input[type='hidden'], input[type='password'], input[type='radio']:checked, input[type='text'], textarea, select").
+      each(function(){
+          if(this.tagName == 'SELECT' && $(this).attr('multiple') == true) {
+              var select_name = this.name;
+              $(this).find('option:selected').each(function(){
+                  a.push(select_name+'[]=' + this.value);
+              })
+          } else {
+              var content = $(this).hasClass('tiny-mce') ? tinyMCE.get($(this).attr('id')).getContent() : this.value;
+              a.push(this.name + '=' + encodeURIComponent(content));
+          }
+      });
+      return a.join('&');
+    }
 
     $(form).on('submit', function (e)
     {
@@ -24,7 +42,8 @@
 
       // Формируем данные для отправки, чтобы они передавались как единственный параметр
       var data = {};
-      data[form.attr('name')] = form.serialize();
+      data[form.attr('name')] = prep_form_data(form);
+      //form.serialize();
 
       // Адрес action формируется в контроллере при создании формы и выводится во view шаблона формы
       var url = form.attr('action');
@@ -74,24 +93,19 @@
             }
           }
         },
-        error: function(e)
-        {
-          console.log("error"+e);
-
-          // demo
-          if (url === '#') {
-            setTimeout(function() {
-              success_send(form);
-            }, 800);
-          }
-        }
+        error: function(e) { console.log("error"+e); },
+      // After send event
       }).always(function() { after_send (form); });
     });
   };
+  
+  /**
+   * Определения  форм
+   */
 
-    var wrapper = $('<div class="form-error-wrap"></div>');
-    var errorPlace = $('<div class="form-error"></div>');
- 
+  var wrapper = $('<div class="form-error-wrap"></div>');
+  var errorPlace = $('<div class="form-error"></div>');
+
   App.Forms_sender(
   {
     form_name: 'auth_form',
@@ -141,8 +155,18 @@
     },
     after_send: function (form) { }
   });
+  
+  /**
+   * Определения  форм
+   */
+  
+  
 
 })(jQuery);
+
+
+
+
 // ---------------------------------------------------------------------
 var jsValidation = function() {
     var
