@@ -9,6 +9,8 @@ class Auth extends Front_Controller
       $this->load->model('users_mdl');
       $this->load->model('auth_mdl');
       
+      $this->load->library('emailer_lib', array(), 'emailer');
+      
   }
 
   public function xhr_reg()
@@ -17,9 +19,10 @@ class Auth extends Front_Controller
     $reg_form->form_data = $this->auth_mdl->get_user_reg_signature();
     if ($reg_form->validate() == true)
     { 
-      $token = $this->user->add_user($reg_form->user_email, $reg_form->user_pass, '', array('u_f_country'=>$reg_form->u_f_country, 'u_name'=>$reg_form->u_name));
-      $this->_send_registration_email($reg_form->user_email, $token);
-      //$reg_form->xhr_answer->view = 
+      $token = $this->user->add_user($reg_form->user_email, $reg_form->user_pass, $reg_form->user_email, array('u_f_country'=>$reg_form->u_f_country, 'u_name'=>$reg_form->u_name));
+      $this->emailer->send_registration_email($reg_form->user_email, $token);
+      $this->view_data['user_email'] = $reg_form->user_email;
+      $reg_form->xhr_answer->view = $this->parse_in('layouts/messages/modal_reg_success_mess');
     }
     else
     {
@@ -58,24 +61,5 @@ class Auth extends Front_Controller
     $auth_form->draw_form();
     
   }
-
-  private function _send_registration_email ($email, $token)
- {
-    //$this->lang->load('site/emails', lang());
-    $subject = '=?UTF-8?B?' . base64_encode( $this->lang->line('restoration_email_subject')) . "?=";
-    
-    $this->view_data['verify_url'] = sub_url('auth/reg').'?token='.$token;
-    $message = $this->parse_in('layouts/email/reg_email');
-    
-    // Headers
-    $headers = 'MIME-Version: 1.0' . "\r\n";
-    $headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
-    $headers .= 'Content-Transfer-Encoding: 8bit' . "\r\n";
-    $headers .= 'From: Startask <invite@startask.com>' . "\r\n";
-    $headers .= "Reply-To: invite@startask.com\r\n";
-
-    // Sending email
-    mail($email, $subject, $message, $headers);
- }
 
 }

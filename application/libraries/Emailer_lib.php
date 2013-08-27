@@ -24,43 +24,17 @@ class Emailer_lib
     $this->HTML_headers .= "Reply-To: invite@startask.com\r\n";
   }
   
-  public function send_ws_invite_email ($email, $verify_url, $workspace)
-  {
-    $this->CI->lang->load('site/emails', lang());
-    $subject = '=?UTF-8?B?' . base64_encode( $this->CI->lang->line('ws_invite_subject')) . "?=";
-    
-    $this->view_data['verify_url'] = $verify_url;
-    $this->view_data['user_name'] = $this->CI->user->user_name;
-    $this->view_data['workspace'] = $workspace;
-    
-    $message = $this->CI->parser->parse('email/'.lang().'/ws_invite_email', $this->view_data, true);
 
-    // Sending email
-    mail($email, $subject, $message,  $this->HTML_headers);
-  }
-  
-  public function send_reg_email($email, $verify_url)
+  public function send_registration_email ($email, $token)
   {
-    $this->CI->lang->load('site/emails', lang());
-    $subject = '=?UTF-8?B?' . base64_encode( $this->CI->lang->line('registration_email_subject')) . "?=";
-    
-    $this->view_data['verify_url'] = $verify_url;
-    $message = $this->CI->parser->parse('email/'.lang().'/reg_email', $this->view_data, true);
-    
-    // Sending email
-    mail($email, $subject, $message, $this->HTML_headers);
-  }
- 
-  public function send_restoration_email ($email, $verify_url)
-  {
-    $this->CI->lang->load('site/emails', lang());
+    //$this->lang->load('site/emails', lang());
     $subject = '=?UTF-8?B?' . base64_encode( $this->CI->lang->line('restoration_email_subject')) . "?=";
     
-    $this->view_data['verify_url'] = $verify_url;
-    $message = $this->CI->parser->parse('email/'.lang().'/restore_pass_email', $this->view_data, true);
-
+    $this->view_data['verify_url'] = sub_url('auth/reg').'?token='.$token;
+    $message = $this->CI->parser->parse('layouts/email/reg_email', $this->view_data, true);
+    
     // Sending email
     mail($email, $subject, $message, $this->HTML_headers);
-  }
+}
   
 }
