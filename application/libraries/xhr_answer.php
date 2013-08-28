@@ -10,6 +10,7 @@ class Xhr_Answer
     $this->answer_data['errors'] = array();
     $this->answer_data['view'] = false;
     $this->answer_data['redirect']= false;
+    $this->answer_data['message']= false;
   }
   
   public function send()

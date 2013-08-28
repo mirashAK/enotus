@@ -7,20 +7,17 @@ class Main extends Front_Controller
     parent::__construct();
 
       $this->load->model('users_mdl');
-      $this->load->model('auth_mdl');
 
       // tmp vars_defs
       $this->view_data['link_out'] = false;
       if ($this->user->user_id == 0) $this->view_data['auth'] = false;
       else $this->view_data['auth'] = true;
       $this->view_data['tariff'] = 'ok';
-      $this->view_data['current'] = 1;
       
       $this->load->model('static_pages_model', 'static_pages');
-      $this->load->model('main_menu_model', 'main_menu');
       
-      $main_menu = $this->main_menu->get_main_menu($this->user);
-      $this->view_data['main_menu_items'] = $main_menu['values'];
+      $this->view_data['main_menu_items'] = $this->menu_lib->create_main_menu();
+      $this->view_data['breadcrumbs'] = '';
       
       $this->view_data['site_header'] = $this->parse_in(lang().'/header_view');
       $this->view_data['site_footer'] =  $this->parse_in(lang().'/footer_view');
@@ -58,6 +55,8 @@ class Main extends Front_Controller
   public function static_page($page_alias)
   {
     $this->view_data['site_title'] = $this->lang->line('title_main_page');
+    
+    $this->view_data['breadcrumbs'] = $this->menu_lib->create_bradcrumbs();
     
     $page = $this->static_pages->get_page($page_alias, $this->user);
     

@@ -30,9 +30,21 @@
       <!-- application [ -->
       <div class="application">
         {site_header} 
-        {site_body}
-      </div>
+        
+      <!-- application content [ -->
+        <div class="app-content">
+            <div class="app-content-inner">
+                <div class="container">
+                  {breadcrumbs}
+                  {site_body}
+                </div><!--<div class="container">-->
+            </div><!--<div class="app-content-inner">-->
+        </div><!--<div class="app-content">-->
+        <!-- ] application content -->
+            
+      </div><!--<div class="application">-->
       <!-- ] application -->
+      
       {site_footer} 
 
         <!-- js [ -->

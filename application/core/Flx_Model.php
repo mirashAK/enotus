@@ -80,6 +80,8 @@ class Flx_Model extends CI_Model
         $final_result['unique'][$key] = $value['unique'];
       }
       
+      $final_result['value'] = false; 
+      
       // А теперь самое интересное - начинаем работать напрямую с методами mysqli
       // Сначала получим второй результат запроса, в качестве объекта типа mysqli - $this->db->conn_id
       if ($this->db->conn_id->next_result())
@@ -97,7 +99,6 @@ class Flx_Model extends CI_Model
             else $final_result['value'][$key] = $value;
           }
         }
-        else $final_result['value'] = array(); 
 
         // Поищем справочники (dicts) прицепленные к полям таблицы
         while($this->db->conn_id->next_result())
@@ -162,6 +163,8 @@ class Flx_Model extends CI_Model
         $final_result['unique'][$key] = $value['unique'];
       }
       
+      $final_result['values'] = false;
+      
       // А теперь самое интересное - начинаем работать напрямую с методами mysqli
       // Сначала получим второй результат запроса, в качестве объекта типа mysqli - $this->db->conn_id
       if ($this->db->conn_id->next_result())
@@ -170,7 +173,7 @@ class Flx_Model extends CI_Model
         $row_result = array();
         // Если полученый результат - объект и в результате больше одной строки
         if (is_object($second_result) && mysqli_num_rows($second_result) > 0)
-        {
+        { 
           $final_result['values'] = array();
           // Теперь пройдёмся по всем строкам результата запроса
           $array_counter = 0;
@@ -184,7 +187,7 @@ class Flx_Model extends CI_Model
           $final_result['values'][$array_counter-1]['position'] = CONST_POS_LAST;
           unset($row_result);
         }
-        
+
         // Получим третий результат - количество строк в таблице
         if ($this->db->conn_id->next_result())
         {
@@ -356,6 +359,8 @@ class Flx_Model extends CI_Model
       $final_result['r_only'] = (object)$final_result['r_only'];
       $final_result['require'] = (object)$final_result['require'];
       $final_result['unique'] = (object)$final_result['unique'];
+      
+      $final_result['values'] = false;
       
       // А теперь самое интересное - начинаем работать напрямую с методами mysqli
       // Сначала получим второй результат запроса, в качестве объекта типа mysqli - $this->db->conn_id

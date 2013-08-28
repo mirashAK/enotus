@@ -81,7 +81,7 @@
             <nav class="main-nav _iblock"><!---item-1-->
                 <ul class="main-nav-list">
                   {main_menu_items}
-                    <li class="main-nav-item {position}"><a href="{sub_url}/{menu_item_link}">{menu_item_name}</a></li><?php //if ($current == 1) { echo " is-current"; } ?>
+                    <li class="main-nav-item {position} {current}"><a href="{sub_url}/{menu_item_link}">{menu_item_name}</a></li>
                   {/main_menu_items}
                 </ul>
             </nav>

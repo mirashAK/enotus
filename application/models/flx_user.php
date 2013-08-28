@@ -119,7 +119,23 @@ class Flx_User extends Flx_Model
   public function get_public_user_data(&$user)
   {
     $result = $this->row_array($user, 'public_users', 'u_f_user_id = '.$user->user_id);
-    if (!empty($result)) return $result['value'];
+    if ($result['value'] !== false) return $result['value'];
     return false;
   }
+  
+  
+//    public function save_user_settings(&$user)
+//   {
+//     if (!empty($user) && $user->user_id !== 0 && !empty($user->user_settings))
+//     {
+//       $sql = "UPDATE `public_users` SET `u_settings`= ? WHERE `u_f_user_id` = ? LIMIT 1;";
+//       $first_result = $this->db->query($sql, array(json_encode($user->user_settings), $user->user_id));
+//     }
+//     if (!empty($user) && $user->user_id !== 0)
+//     {
+//       // Just for set user last active
+//       $sql = "UPDATE `public_users` SET `u_last_active`= NOW() WHERE `u_f_user_id` = ? LIMIT 1;";
+//       $first_result = $this->db->query($sql, $user->user_id);
+//     }
+//   }
 }

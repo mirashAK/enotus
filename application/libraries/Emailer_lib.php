@@ -11,17 +11,20 @@ class Emailer_lib
   {
     $this->CI =& get_instance();
     
-    $this->view_data['site_name'] = str_replace('http://', '', base_url());
+    $this->view_data['site_name'] = preg_replace('~^http://|/\w{2}/?$~', '', base_url());
+    $this->view_data['site_Name'] = ucfirst($this->view_data['site_name']);
     $this->view_data['base_url'] = base_url();
     $this->view_data['sub_url'] = sub_url();
     $this->view_data['res_url'] = res_url();
+    $this->view_data['res_img'] = res_url('assets/img/');
+    
     
     // HTML headers
     $this->HTML_headers = 'MIME-Version: 1.0' . "\r\n";
     $this->HTML_headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
     $this->HTML_headers .= 'Content-Transfer-Encoding: 8bit' . "\r\n";
-    $this->HTML_headers .= 'From: Startask <invite@startask.com>' . "\r\n";
-    $this->HTML_headers .= "Reply-To: invite@startask.com\r\n";
+    $this->HTML_headers .= 'From: '.$this->view_data['site_name'].' <invite@'.$this->view_data['site_name'].'>' . "\r\n";
+    $this->HTML_headers .= 'Reply-To: invite@'.$this->view_data['site_name']."\r\n";
   }
   
 

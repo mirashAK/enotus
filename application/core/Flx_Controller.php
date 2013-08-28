@@ -8,13 +8,15 @@ class Flx_Controller extends CI_Controller {
   {
     parent::__construct();
     $this->view_data['scripts'] = array();
+    require_once APPPATH.'libraries/safeClass.php';
     require_once APPPATH.'libraries/Form_Builder.php';
   }
   
-  protected function parse_in($view_name)
+  protected function parse_in($view_name, $custom_data = null)
   {
     if (!empty($this->parser))
-      return $this->parser->parse($view_name, $this->view_data, TRUE);
+      if (!empty($custom_data)) return $this->parser->parse($view_name, $custom_data, TRUE);
+      else return $this->parser->parse($view_name, $this->view_data, TRUE);
   }
 
   protected function parse_out($view_name)
@@ -79,7 +81,12 @@ class Default_Controller extends Flx_Controller
       parent::__construct();
       $this->load->database('default');
       $this->load->library('user_lib', array(), 'user');
-      $this->set_language(/*$this->user->user_lang*/);
+      $this->set_language($this->user->user_public->u_lang);
+      $this->load->model('auth_mdl');
+      
+      // Check security
+      if (false === $this->input->is_ajax_request() && false === $this->auth_mdl->check_route_permission(uri_string())) $this->redirect(base_url());
+      
       $this->view_data['base_url'] = base_url();
       $this->view_data['sub_url'] = sub_url();
       $this->view_data['res_url'] = res_url();
@@ -93,7 +100,7 @@ class Test_Controller extends Flx_Controller
       parent::__construct();
       $this->load->database('test');
       $this->load->library('user_lib', array(), 'user');
-      $this->set_language(/*$this->user->user_lang*/);
+      $this->set_language($this->user->user_public->u_lang);
       $this->view_data['base_url'] = base_url();
       $this->view_data['sub_url'] = sub_url();
       $this->view_data['res_url'] = res_url();
@@ -122,8 +129,10 @@ class Front_Controller extends Default_Controller
 
       $this->lang->load('site/titles', lang());
       $this->lang->load('site/forms', lang());
-      $this->view_data['lang'] = $this->lang->language;
-      $this->view_data['language'] = lang();
+
+      $this->load->library('menu_lib');
+      
+      $this->view_data['lang'] = lang();
 
       $this->view_data['site_title'] = '';
       $this->view_data['site_metadata'] = '';

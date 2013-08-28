@@ -7,10 +7,7 @@ class Auth extends Front_Controller
     parent::__construct();
 
       $this->load->model('users_mdl');
-      $this->load->model('auth_mdl');
-      
       $this->load->library('emailer_lib', array(), 'emailer');
-      
   }
 
   public function xhr_reg()
@@ -33,7 +30,7 @@ class Auth extends Front_Controller
 
   public function reg()
   {
-    if ($this->input->get('token') == false) redirect(sub_url(), 'refresh');
+    if ($this->input->get('token') == false) $this->redirect(sub_url());
 
     $result = $this->user->reg_user();
     
