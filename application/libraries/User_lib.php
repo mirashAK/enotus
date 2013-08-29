@@ -5,6 +5,9 @@ class User_lib
   public $user_token = null;
   public $user_ip = null;
   public $user_last_activity = null;
+  public $user_public = null;
+  public $error_code = false;
+  public $error = false;
   
   public function __construct()
   {
@@ -26,7 +29,12 @@ class User_lib
       $this->_set_values();
       return true;
     }
-    else return $this->flx_user_mdl->get_error_text($new_token, 'flx_do_auth');
+    else
+    {
+      $this->error_code = $new_token;
+      $this->error = $this->flx_user_mdl->get_error_text($new_token, 'flx_do_auth');
+      return false;
+    }
   }
   
   public function add_user ($email, $pass, $login = '', $user_data = array())

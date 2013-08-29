@@ -8,11 +8,14 @@
 class safeClass
 { 
 
-  function __construct($data)
+  function __construct($data = null)
   {
-    if (!is_array($data)) $data = (array)$data;
-    foreach ($data as $key=>$value)
-      $this->$key = $value;
+    if (!empty($data))
+    {
+      if (!is_array($data)) $data = (array)$data;
+      foreach ($data as $key=>$value)
+        $this->$key = $value;
+    }
   }
   
   /**

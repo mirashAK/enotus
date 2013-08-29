@@ -18,6 +18,7 @@ class Emailer_lib
     $this->view_data['res_url'] = res_url();
     $this->view_data['res_img'] = res_url('assets/img/');
     
+    $this->CI->lang->load('site/emails', lang());
     
     // HTML headers
     $this->HTML_headers = 'MIME-Version: 1.0' . "\r\n";
@@ -31,13 +32,25 @@ class Emailer_lib
   public function send_registration_email ($email, $token)
   {
     //$this->lang->load('site/emails', lang());
-    $subject = '=?UTF-8?B?' . base64_encode( $this->CI->lang->line('restoration_email_subject')) . "?=";
+    $subject = '=?UTF-8?B?' . base64_encode( $this->CI->lang->line('email_registration_subject')) . "?=";
     
     $this->view_data['verify_url'] = sub_url('auth/reg').'?token='.$token;
     $message = $this->CI->parser->parse('layouts/email/reg_email', $this->view_data, true);
     
     // Sending email
     mail($email, $subject, $message, $this->HTML_headers);
-}
+  }
+  
+  public function send_ch_pass_email ($email, $token)
+  {
+    //$this->lang->load('site/emails', lang());
+    $subject = '=?UTF-8?B?' . base64_encode( $this->CI->lang->line('email_restoration_subject')) . "?=";
+    
+    $this->view_data['verify_url'] = sub_url('auth/change_pass').$token;
+    $message = $this->CI->parser->parse('layouts/email/ch_pass_email', $this->view_data, true);
+    
+    // Sending email
+    mail($email, $subject, $message, $this->HTML_headers);
+  }
   
 }

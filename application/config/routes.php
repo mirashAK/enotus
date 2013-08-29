@@ -44,6 +44,9 @@ $route['404_override'] = '';
 $route['auth'] = "auth";
 $route['auth/(:any)'] = 'auth/$1';
 
+$route['user'] = "user";
+$route['user/(:any)'] = 'user/$1';
+
 $route['home'] = "main";
 $route['(:any)'] = 'main/$1';//'static_pages/$1';
 

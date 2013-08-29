@@ -46,7 +46,56 @@ class Menu_lib
     return $menu['values'] ;
   }
   
-   function create_bradcrumbs ()
+  public function create_user_menu()
+  {
+    $menu_item_name = 'user_menu';
+    $class_current = 'is-current';
+    
+    $menu = $this->menu_mdl->get_sub_menu($menu_item_name);
+    
+    if ($menu['values']) foreach ($menu['values'] as $key=>$menu_item)
+    {
+      $sub_items = $this->menu_mdl->get_sub_menu($menu_item['menu_item_name']);
+      $menu['values'][$key]['current'] = '';
+      if ($menu_item['menu_item_link'] == substr (uri_string() , 0 , strlen($menu_item['menu_item_link']))) $menu['values'][$key]['current'] = $class_current;
+      elseif ($sub_items['values'] !== false)
+        foreach($sub_items['values'] as $sub_item)
+          if ($sub_item['menu_item_link'] == substr (uri_string() , 0 , strlen($sub_item['menu_item_link']))) $menu['values'][$key]['current'] = $class_current;
+      
+      $menu['values'][$key]['menu_item_name'] = $this->lang->line($menu_item['menu_item_name']); 
+    }
+    else $menu['values'] = array();
+    
+    return $menu['values'] ;
+  } 
+  
+  public function create_user_tabs()
+  {
+    $menu_item_name = 'user_menu';
+    $class_current = 'is-current';
+    $icon_journal = '<i class="icon icon-journal"></i>';
+    
+    $menu = $this->menu_mdl->get_sub_menu($menu_item_name);
+    
+    if ($menu['values']) foreach ($menu['values'] as $key=>$menu_item)
+    {
+      $sub_items = $this->menu_mdl->get_sub_menu($menu_item['menu_item_name']);
+      $menu['values'][$key]['current'] = '';
+      $menu['values'][$key]['icon_journal'] = '';
+      if ($menu['values'][$key]['menu_item_name'] == 'menu_item_user_journal') $menu['values'][$key]['icon_journal'] = $icon_journal;
+      if ($menu_item['menu_item_link'] == substr (uri_string() , 0 , strlen($menu_item['menu_item_link']))) $menu['values'][$key]['current'] = $class_current;
+      elseif ($sub_items['values'] !== false)
+        foreach($sub_items['values'] as $sub_item)
+          if ($sub_item['menu_item_link'] == substr (uri_string() , 0 , strlen($sub_item['menu_item_link']))) $menu['values'][$key]['current'] = $class_current;
+      
+      $menu['values'][$key]['menu_item_name'] = $this->lang->line($menu_item['menu_item_name']); 
+    }
+    else $menu['values'] = array();
+    
+    return $menu['values'] ;
+  } 
+  
+   function create_bradcrumbs ($prefix = '')
   {
     $final_result = array();
     $class_current = 'is-current';
@@ -68,10 +117,10 @@ class Menu_lib
       {
         $path .= $segment;
         $menu_item = $this->menu_mdl->get_breadcrumb_route($path);
-        if ($menu_item['value'])
+        if ($menu_item['value'] !== false)
         {
           $menu_item = $menu_item['value'];
-          $menu_item['menu_item_name'] = $this->lang->line($menu_item['menu_item_name']); 
+          $menu_item['menu_item_name'] = $prefix.$this->lang->line($menu_item['menu_item_name']); 
 
           if ($key >= $segments_array_length)
           {
@@ -88,9 +137,8 @@ class Menu_lib
             $menu_item['link_end'] = '</a>';
           }
           $final_result[] = $menu_item;
-          $path .= '/';
         }
-        else break;
+        $path .= '/';
       }
     }
     return $this->parser->parse('layouts/common/breadcrumbs_view', array('breadcrumb_items' => $final_result), true);

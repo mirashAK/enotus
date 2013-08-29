@@ -30,7 +30,6 @@
       <!-- application [ -->
       <div class="application">
         {site_header} 
-        
       <!-- application content [ -->
         <div class="app-content">
             <div class="app-content-inner">
@@ -44,9 +43,8 @@
             
       </div><!--<div class="application">-->
       <!-- ] application -->
-      
       {site_footer} 
-
+      
         <!-- js [ -->
         <script src="{res_js}/vendor/jquery.min.js"></script>
         <script src="{res_js}/plugins.js"></script>

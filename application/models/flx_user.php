@@ -65,19 +65,18 @@ class Flx_User extends Flx_Model
     $result_data .= '\"'.$key.'\":\"'.$value.'\",';
     
     $this->save_table_custom($tmp_user, 'public_users', $result_data);
-    
-    var_export($this->db->last_query());
+    //var_export($this->db->last_query());
   }
   
   public function token_passwd($user_email)
   {
-    $sql = "SELECT token_passwd (?) AS 'get_params' ;";
+    $sql = "SELECT token_passwd (?) AS 'token' ;";
     $first_result = $this->db->query($sql, array($user_email));
     
     if (!empty($first_result) && $first_result->num_rows() == 1)
     {
       $first_result = $first_result->row_array();
-      return $first_result['get_params'];
+      return $first_result['token'];
     }
     else return false;
   }
@@ -117,7 +116,7 @@ class Flx_User extends Flx_Model
   }
   
   public function get_public_user_data(&$user)
-  {
+  { 
     $result = $this->row_array($user, 'public_users', 'u_f_user_id = '.$user->user_id);
     if ($result['value'] !== false) return $result['value'];
     return false;

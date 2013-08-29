@@ -49,9 +49,9 @@
       var url = form.attr('action');
 
       // Контейнер используем для замены его содержимого кодом HTML, сформированным после обработки формы
-      var reload_container = form_data.reload_container || '.'+form.attr('name')+'_reload_container';
-      reload_container = check_result(form.parents(reload_container).first()) || false;
-
+      var reload_container = form_data.reload_container || '#'+form.attr('name')+'_reload_container';
+      reload_container = check_result($(reload_container).first()) || false;
+      
       var before_send = form_data.before_send || function(){};
       var after_send = form_data.after_send || function(){};
       var success_send = form_data.success_send || function(){};
@@ -109,7 +109,7 @@
   App.Forms_sender(
   {
     form_name: 'auth_form',
-    reload_container: '#modal-registration',
+    reload_container: '#login_replace',
     on_key_press: function (event) { $(event.target).removeClass('error'); },
     on_error: function (elem, errors)
     {
@@ -128,6 +128,7 @@
         }
       });
     },
+    success_send: function (form) { $('#modal-login').modal('hide'); userOptionsDropdown(); },
     after_send: function (form) { }
   });
     
@@ -152,10 +153,54 @@
           $(this).removeAttr('data-valid');
         }
       });
-    },
-    after_send: function (form) { }
+    }
   });
   
+  App.Forms_sender(
+  {
+    form_name: 'ch_pass_email_form',
+    on_key_press: function (event) { $(event.target).removeClass('error'); },
+    on_error: function (elem, errors)
+    {
+      elem.wrap(wrapper).after(errorPlace.clone().html(errors));
+      elem.attr('data-valid', "false");
+    },
+    before_send: function (form, xhr)
+    {
+      form.find("input[type='password'], input[type='text'], input[type='email']").each(function()
+      {
+        if($(this).next('.form-error').length)
+        {
+          $(this).next('.form-error').remove();
+          $(this).unwrap('.form-error-wrap');
+          $(this).removeAttr('data-valid');
+        }
+      });
+    }
+  });
+  
+  App.Forms_sender(
+  {
+    form_name: 'ch_pass_form',
+    on_key_press: function (event) { $(event.target).removeClass('error'); },
+    on_error: function (elem, errors)
+    {
+      elem.wrap(wrapper).after(errorPlace.clone().html(errors));
+      elem.attr('data-valid', "false");
+    },
+    before_send: function (form, xhr)
+    {
+      form.find("input[type='password'], input[type='text'], input[type='email']").each(function()
+      {
+        if($(this).next('.form-error').length)
+        {
+          $(this).next('.form-error').remove();
+          $(this).unwrap('.form-error-wrap');
+          $(this).removeAttr('data-valid');
+        }
+      });
+    }
+  });
   /**
    * Определения  форм
    */
@@ -339,7 +384,7 @@ var searchPane = function() {
 searchPane();
 
 
-var userOptionsDropdown =function() {
+var userOptionsDropdown = function() {
     $('.user-link-wrap').click(function(event) {
         event.preventDefault();
 

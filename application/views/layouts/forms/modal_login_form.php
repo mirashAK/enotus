@@ -21,7 +21,7 @@
                     <label>
                         Пароль:<br>
                         <input name="{name:user_pass}" type="{HTML_type:user_pass}" id="{caption:user_pass}" value="{value:user_pass}" class="text password">
-                        <a href="#">Я не помню пароль</a>
+                        <a href="{sub_url}/auth/restoration">Я не помню пароль</a>
                     </label>
                 </div>
             </div>

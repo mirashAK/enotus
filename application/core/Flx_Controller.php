@@ -1,7 +1,7 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Flx_Controller extends CI_Controller {
-
+class Flx_Controller extends CI_Controller 
+{
   protected $view_data = array();
   
   function __construct()
@@ -142,10 +142,50 @@ class Front_Controller extends Default_Controller
       $this->view_data['site_header'] = '';
       $this->view_data['site_footer'] =  '';
       $this->view_data['site_body'] = '';
+      $this->view_data['breadcrumbs'] = '';
       
       $this->view_data['res_js'] = res_url('assets/js/');
       $this->view_data['res_css'] = res_url('assets/css/');
       $this->view_data['res_img'] = res_url('assets/img/');
+      
+      
+      // tmp defs
+      $is_link_out = false;
+      $this->view_data['tariff'] = 'ok';
+      
+      if (false === $this->input->is_ajax_request())
+      {
+        $this->load->model('static_pages_model', 'static_pages');
+
+        if ($is_link_out == false)
+        {
+          $this->view_data['main_menu_items'] = $this->menu_lib->create_main_menu();
+          if ($this->user->user_id == 0)  $this->view_data['user_controls_panel'] = $this->parse_in(lang().'/header_user_guest_view');
+          else
+          {
+            $this->view_data['user_public'] = (array)$this->user->user_public;
+            $this->view_data['user_email'] = $this->user->user_email;
+            $this->view_data['user_menu_items'] = $this->menu_lib->create_user_menu();
+            $this->view_data['user_controls_panel'] = $this->parse_in(lang().'/header_user_reg_view');
+          }
+          $this->view_data['header_controls_panel'] = $this->parse_in(lang().'/header_inside_view');
+        }
+        else $this->view_data['header_controls_panel'] = $this->parse_in(lang().'/header_outside_view');
+        
+        $this->view_data['site_header'] = $this->parse_in(lang().'/header_view');
+        $this->view_data['site_footer'] =  $this->parse_in(lang().'/footer_view');
+        
+        if ($this->user->user_id == 0)
+        {
+          $auth_form = Form_Builder::factory('auth_form', sub_url('auth/xhr_auth'));
+          $this->view_data['site_footer'] .= $auth_form->draw_form('layouts/forms/modal_login_form', $this->view_data);
+          
+          $reg_form = Form_Builder::factory('reg_form', sub_url('auth/xhr_reg'));
+          $reg_form->form_data = $this->auth_mdl->get_user_reg_signature();
+          
+          $this->view_data['site_footer'] .= $reg_form->draw_form('layouts/forms/modal_reg_form', $this->view_data);
+        }
+      }
     }
 }
 

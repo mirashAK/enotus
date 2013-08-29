@@ -13,7 +13,7 @@ $config['flx_reg_form'] = array (
           'unique' =>array('user_email'),
         );
 
-$config['flx_ch_pass_form_email'] = array (
+$config['flx_ch_pass_email_form'] = array (
           'type'    =>array('user_email'=>'email'),
           'require' =>array('user_email'),
         );
