@@ -54,6 +54,7 @@ class Auth extends Front_Controller
           // Create header controls
           $this->view_data['main_menu_items'] = $this->menu_lib->create_main_menu();
           $this->view_data['user_menu_items'] = $this->menu_lib->create_user_menu();
+          $this->view_data['user_public'] = (array)$this->user->user_public;
           $this->view_data['user_controls_panel'] = $this->parse_in(lang().'/header_user_reg_view'); 
           $auth_form->xhr_answer->view = $this->parse_in(lang().'/header_inside_view');
         }

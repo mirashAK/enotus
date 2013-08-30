@@ -521,9 +521,14 @@ class Flx_Model extends CI_Model
     {
       if ($form->is_new) $first_result = $this->db->query($sql, array($user->user_token, $user->user_ip, $table, $serialized_values, ''));
       else $first_result = $this->db->query($sql, array($user->user_token, $user->user_ip, $table, $serialized_values, $where));
-      //if (!empty($first_result) && $first_result->num_rows() == 1)
+      
+      if (!empty($first_result) && $first_result->num_rows() == 1)
+      {
+        $first_result = $first_result->row_array();
+        $first_result = json_decode($first_result['answer'], true);
+      }
       $this->_clear_results();
-      return true;
+      return $first_result;
     }
     $this->_clear_results();
     return false;

@@ -68,6 +68,9 @@
         {
           if (answer.valid === true)
           {
+            // Меняем значения полей, например при добавлении новой записи
+            if (answer.update !== false)
+              jQuery.each(answer.update, function (name, value) { form.find('[name="'+name+'"]').val(value); });
             // Сервер в ответе выдаёт либо адрес редиректа
             if (answer.redirect !== false) { window.location = answer.redirect; }
             //  либо код HTML, который нужно поместить на место формы (в reload_container)
@@ -201,6 +204,30 @@
       });
     }
   });
+  
+  App.Forms_sender(
+  {
+    form_name: 'company_settings_form',
+    on_key_press: function (event) { $(event.target).removeClass('error'); },
+    on_error: function (elem, errors)
+    {
+      elem.wrap(wrapper).after(errorPlace.clone().html(errors));
+      elem.attr('data-valid', "false");
+    },
+    before_send: function (form, xhr)
+    {
+      form.find("input[type='password'], input[type='text'], input[type='email']").each(function()
+      {
+        if($(this).next('.form-error').length)
+        {
+          $(this).next('.form-error').remove();
+          $(this).unwrap('.form-error-wrap');
+          $(this).removeAttr('data-valid');
+        }
+      });
+    }
+  });
+  
   /**
    * Определения  форм
    */

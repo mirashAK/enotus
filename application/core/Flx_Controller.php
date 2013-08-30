@@ -69,6 +69,7 @@ class Flx_Controller extends CI_Controller
   protected function redirect($url, $type = 'refresh')
   {
     $this->user_session->save();
+    $this->user->save_public();
     redirect($url, $type);
   }
   
@@ -129,7 +130,7 @@ class Front_Controller extends Default_Controller
 
       $this->lang->load('site/titles', lang());
       $this->lang->load('site/forms', lang());
-
+     
       $this->load->library('menu_lib');
       
       $this->view_data['lang'] = lang();
@@ -155,8 +156,6 @@ class Front_Controller extends Default_Controller
       
       if (false === $this->input->is_ajax_request())
       {
-        $this->load->model('static_pages_model', 'static_pages');
-
         if ($is_link_out == false)
         {
           $this->view_data['main_menu_items'] = $this->menu_lib->create_main_menu();

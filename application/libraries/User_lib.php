@@ -66,7 +66,7 @@ class User_lib
         
         if (array_key_exists('user_id', $result))
         { // Insert data into public_users table
-          $this->flx_user_mdl->save_public_user($result['user_token'], $this->user->user_ip, $result['user_id'], json_decode($this->encrypt->decode($result['user_data']),true));
+          $this->flx_user_mdl->save_public_user($this->user_token, $this->user_ip, $result['user_id'], json_decode($this->encrypt->decode($result['user_data']),true));
         }
         return true;
       }
@@ -141,6 +141,12 @@ class User_lib
       $this->user_public =  new safeClass();
     unset($result);
   }
+  
+  public function save_public ()
+  {
+    if ($this->user_id > 0) $this->flx_user_mdl->save_public_user($this->user_token, $this->user_ip, $this->user_id, (array)$this->user_public, $this->user_id);
+  }
+  
   
   /**
     * __get

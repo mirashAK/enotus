@@ -338,6 +338,12 @@ class Form_Builder
               $view_string = str_replace ( $replace_string , $new_string , $view_string);
             }
           break;
+          
+          case 'array':
+              foreach ($val_array['value'] as $id=>$value)
+              {/*echo($value); echo('<br/>');*/}
+          break;
+          
           case 'multi':
               foreach ($val_array['value'] as $id=>$value)
               {/*echo($value); echo('<br/>');*/}

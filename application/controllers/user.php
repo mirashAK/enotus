@@ -45,10 +45,38 @@ class User extends Front_Controller
   
   public function settings()
   {
-    $this->view_data['site_title'] = $this->lang->line('title_user_settings');
+    $this->load->model('company_mdl');
+
+    $settings_form = Form_Builder::factory('company_settings_form', sub_url('user/xhr_save_company_settings'));
+    $settings_form->form_data = $this->company_mdl->get_company_data();
+    
+    $this->view_data['company_settings_form'] = $settings_form->draw_form('layouts/forms/company_settings_form', $this->view_data);
 
     $this->view_data['site_body'] = $this->parse_in(lang().'/user_settings_view');
-    
+    $this->view_data['site_title'] = $this->lang->line('title_user_settings');
     $this->parse_out('main_view');
   }
+  
+  public function xhr_save_company_settings()
+  {
+    $this->load->model('company_mdl');
+    $settings_form = Form_Builder::factory('company_settings_form', sub_url('xhr_save_company_settings'));
+    $settings_form->form_data = $this->company_mdl->get_company_data();
+    
+    if ($settings_form->validate() == true)
+    {
+      $answer = $this->company_mdl->save_company_data($settings_form);
+      if($answer!==false)
+      {
+        if (array_key_exists('inserted_id', $answer))
+        {
+          $this->user->user_public->u_f_company = $answer['inserted_id'];
+          $settings_form->xhr_answer->update = array($settings_form->name['pc_id'] => $answer['inserted_id']);
+          $this->user->save_public();
+        }
+      }
+    }
+    $settings_form->draw_form();
+  }
+  
 }

@@ -52,19 +52,30 @@ class Flx_User extends Flx_Model
     else return false;
   }
   
-  public function save_public_user ($token, $ip, $id, $data)
+  
+  public function get_public_user_data(&$user)
+  { 
+    $result = $this->row_array($user, 'public_users', 'u_f_user_id = '.$user->user_id);
+    if ($result['value'] !== false) return $result['value'];
+    return false;
+  }
+  
+  public function save_public_user ($token, $ip, $u_f_user_id, $data, $user_id = null)
   {
     $tmp_user = new stdClass();
     $tmp_user->user_token = $token;
     $tmp_user->user_ip = $ip;
-    
-    $data['u_f_user_id'] = $id;
+
+    if (empty($user_id)) $data['u_f_user_id'] = $u_f_user_id;
     $result_data = '';
 
     foreach($data as $key=>$value)
     $result_data .= '\"'.$key.'\":\"'.$value.'\",';
     
-    $this->save_table_custom($tmp_user, 'public_users', $result_data);
+    if (empty($user_id))
+      $this->save_table_custom($tmp_user, 'public_users', $result_data);
+    else
+      $this->save_table_custom($tmp_user, 'public_users', $result_data, 'u_f_user_id = '.$user_id);
     //var_export($this->db->last_query());
   }
   
@@ -114,14 +125,7 @@ class Flx_User extends Flx_Model
     }
     else return false;
   }
-  
-  public function get_public_user_data(&$user)
-  { 
-    $result = $this->row_array($user, 'public_users', 'u_f_user_id = '.$user->user_id);
-    if ($result['value'] !== false) return $result['value'];
-    return false;
-  }
-  
+ 
   
 //    public function save_user_settings(&$user)
 //   {

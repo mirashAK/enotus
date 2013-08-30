@@ -8,6 +8,7 @@ class Flx_Hooks extends CI_Hooks
     {
       $this->CI =& get_instance();
       $this->CI->user_session->save();
+      if (!empty($this->CI->user->user_public)) $this->CI->user->save_public();
     }
     
     if ( ! $this->enabled OR ! isset($this->hooks[$which]))
