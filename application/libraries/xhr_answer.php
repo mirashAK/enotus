@@ -17,7 +17,6 @@ class Xhr_Answer
   public function send()
   {
     echo (json_encode($this->answer_data));
-    exit ();
   }
   
   public function __set($name, $value)

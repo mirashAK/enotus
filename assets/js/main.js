@@ -85,8 +85,8 @@
             for ( var name in answer.errors )
             {
               if ( answer.errors.hasOwnProperty(name) ) {
-                // Имена элементов массива с ошибками соответствуют либо name поля ввода либо его id
-                var elem = check_result(form.find('[name="'+name+'"]')) || check_result(form.find('#'+name));
+                // Имена элементов массива с ошибками соответствуют name поля ввода
+                var elem = check_result(form.find('[name="'+name+'"]'));
                 if (elem && form_data.on_error)
                 {
                   form_data.on_error(elem, answer.errors[name]);
@@ -208,6 +208,7 @@
   App.Forms_sender(
   {
     form_name: 'company_settings_form',
+    reload_container: '#phones-rows',
     on_key_press: function (event) { $(event.target).removeClass('error'); },
     on_error: function (elem, errors)
     {
@@ -233,10 +234,29 @@
    */
   
   
+var addPhone = function() 
+{
+  $('#add-phone').click(function(event)
+  {
+    event.preventDefault();
+
+    var adderLink = $(this);
+    var container = $('#phones-rows');
+    
+    jQuery.ajax(
+    {
+      url: SUBURL+'/user/xhr_add_company_phone',
+      type: 'get',
+      dataType: 'json',
+      success: function(answer) { if (answer.view !== false) container.html(answer.view); },
+      error: function(e){console.log("error"+e); }     
+    });
+  });
+};
+addPhone(); 
+  
 
 })(jQuery);
-
-
 
 
 // ---------------------------------------------------------------------
@@ -468,29 +488,6 @@ var userOptionsDropdown = function() {
     });
 };
 userOptionsDropdown();
-
-
-var addPhone = function() {
-    $('#add-phone').click(function(event) {
-        event.preventDefault();
-
-
-        var adderLink, adderRow, htmlToAdd;
-        adderLink = $(this);
-        adderRow = adderLink.closest('.control-row');
-        htmlToAdd = '<div class="control-row add-phone-row">' +
-                        '<div class="control-cell">' +
-                            '<label>' +
-                                'Контактный телефон:<br>' +
-                                '<input type="text" name="contact_phone[]" class="text phone" value="+38">' +
-                            '</label>' +
-                        '</div>' +
-                    '</div>';
-        adderRow.before(htmlToAdd);
-    });
-};
-addPhone();
-
 
 var services = function() {
     $('#js-add-link').click(function(event) {

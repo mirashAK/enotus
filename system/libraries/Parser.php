@@ -139,7 +139,7 @@ class CI_Parser {
 	 * @return	string
 	 */
 	function _parse_single($key, $val, $string)
-	{
+	{   var_export($key); echo('--');var_export($val); echo('--');var_export($string); echo('<br/>');
 		return str_replace($this->l_delim.$key.$this->r_delim, $val, $string);
 	}
 

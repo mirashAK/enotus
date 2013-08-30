@@ -46,9 +46,10 @@
       {site_footer} 
       
         <!-- js [ -->
-        <script src="{res_js}/vendor/jquery.min.js"></script>
-        <script src="{res_js}/plugins.js"></script>
-        <script src="{res_js}/main.js"></script>
+        <script type="text/javascript">var BASEURL = '{base_url}'; var SUBURL = '{sub_url}'; var LANG = '{language}'; var BASEURLLANG = '{res_url}/{language}/';</script>
+        <script type="text/javascript" src="{res_js}/vendor/jquery.min.js"></script>
+        <script type="text/javascript" src="{res_js}/plugins.js"></script>
+        <script type="text/javascript" src="{res_js}/main.js"></script>
 
         <script>
             $('#deal-country').select2();

@@ -49,6 +49,9 @@ class User extends Front_Controller
 
     $settings_form = Form_Builder::factory('company_settings_form', sub_url('user/xhr_save_company_settings'));
     $settings_form->form_data = $this->company_mdl->get_company_data();
+
+    $phones = $settings_form->pc_phones;
+    if (empty($phones)) $settings_form->pc_phones = array(0=>'+38');
     
     $this->view_data['company_settings_form'] = $settings_form->draw_form('layouts/forms/company_settings_form', $this->view_data);
 
@@ -60,10 +63,24 @@ class User extends Front_Controller
   public function xhr_save_company_settings()
   {
     $this->load->model('company_mdl');
-    $settings_form = Form_Builder::factory('company_settings_form', sub_url('xhr_save_company_settings'));
+    $settings_form = Form_Builder::factory('company_settings_form');
     $settings_form->form_data = $this->company_mdl->get_company_data();
     
-    if ($settings_form->validate() == true)
+    $phones = $settings_form->pc_phones;
+    $tmp_phones = array();
+    if (!empty($phones)) foreach ($phones as $key=>$value)
+    {
+      if (!empty($value))
+      {
+        $tmp_phones[] = $value;
+        $this->view_data['phone_input_name'] = $settings_form->name['pc_phones']."[$key]";
+        $this->view_data['phone_input_value'] = $value;
+        $settings_form->xhr_answer->view .= $this->parse_in('layouts/forms/company_settings_phone_form');
+      }
+    }
+    $settings_form->pc_phones = $tmp_phones;
+    
+    if ($settings_form->validate(array('pc_phones'=>array('type'=>'phone'))) == true)
     {
       $answer = $this->company_mdl->save_company_data($settings_form);
       if($answer!==false)
@@ -72,11 +89,29 @@ class User extends Front_Controller
         {
           $this->user->user_public->u_f_company = $answer['inserted_id'];
           $settings_form->xhr_answer->update = array($settings_form->name['pc_id'] => $answer['inserted_id']);
-          $this->user->save_public();
         }
       }
     }
     $settings_form->draw_form();
   }
   
+  public function xhr_add_company_phone()
+  {
+    $this->load->library('xhr_answer');
+    $this->load->model('company_mdl');
+    $settings_form = Form_Builder::factory('company_settings_form');
+    $settings_form->form_data = $this->company_mdl->get_company_data();
+    
+    $phones = $settings_form->pc_phones;
+    if (!empty($phones)) foreach ($phones as $key=>$value)
+    {
+      $this->view_data['phone_input_name'] = $settings_form->name['pc_phones']."[$key]";
+      $this->view_data['phone_input_value'] = $value;
+      $this->xhr_answer->view .= $this->parse_in('layouts/forms/company_settings_phone_form');
+    }
+    $this->view_data['phone_input_name'] = $settings_form->name['pc_phones'].'['.count($phones).']';
+    $this->view_data['phone_input_value'] = '+38';
+    $this->xhr_answer->view .= $this->parse_in('layouts/forms/company_settings_phone_form');
+    $this->xhr_answer->send();
+  }
 }

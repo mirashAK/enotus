@@ -86,7 +86,7 @@ class Default_Controller extends Flx_Controller
       $this->load->model('auth_mdl');
       
       // Check security
-      if (false === $this->input->is_ajax_request() && false === $this->auth_mdl->check_route_permission(uri_string())) $this->redirect(base_url());
+     // if (false === $this->input->is_ajax_request() && false === $this->auth_mdl->check_route_permission(uri_string())) $this->redirect(base_url());
       
       $this->view_data['base_url'] = base_url();
       $this->view_data['sub_url'] = sub_url();

@@ -96,6 +96,7 @@ class Form_Builder
 
       $is_xhr_request = $this->CI->input->is_ajax_request();
       if ($is_xhr_request == true) parse_str($this->CI->input->post($this->form_data['form']['name']), $xhr_request);
+      //var_export($xhr_request);
       
       foreach ($provided_data['value'] as $field=>$value)
       {
@@ -103,18 +104,28 @@ class Form_Builder
         if ($is_xhr_request == true)
         {
           if (array_key_exists($this->form_data['form']['name']."_$field", $xhr_request))
-            $this->form_data['value'][$field] = trim($xhr_request[$this->form_data['form']['name']."_$field"]);
+            // Request data
+            $this->form_data['value'][$field] = $xhr_request[$this->form_data['form']['name']."_$field"];
           else
-            $this->form_data['value'][$field] = $provided_data['value'][$field];
+            // DB data
+            if (array_key_exists($field, $this->form_data['type']) && $this->form_data['type'][$field] == 'array')
+              $this->form_data['value'][$field] = json_decode($provided_data['value'][$field], true);
+            else $this->form_data['value'][$field] = $provided_data['value'][$field];
         }
         else
         {
-          $posted_field = trim($this->CI->input->post($this->form_data['form']['name']."_$field"));
+          $posted_field = $this->CI->input->post($this->form_data['form']['name']."_$field");
           if (!empty($posted_field))
+            // Request data
             $this->form_data['value'][$field] = $posted_field;
           else
-            $this->form_data['value'][$field] = $provided_data['value'][$field];
+            // DB data
+            if (array_key_exists($field, $this->form_data['type']) && $this->form_data['type'][$field] == 'array')
+              $this->form_data['value'][$field] = json_decode($provided_data['value'][$field], true);
+            else $this->form_data['value'][$field] = $provided_data['value'][$field];
         }
+        if (!is_array($this->form_data['value'][$field]))
+          $this->form_data['value'][$field] = trim($this->form_data['value'][$field]);
       }
       if(!empty($provided_data['is_new'])) $this->form_data['is_new'] = $provided_data['is_new'];
       else $this->form_data['is_new'] = false;
@@ -143,75 +154,53 @@ class Form_Builder
         if ($is_xhr_request == true)
         {
           if (array_key_exists($this->form_data['name'][$field], $xhr_request))
-            $this->form_data['value'][$field] = trim($xhr_request[$this->form_data['name'][$field]]);
+            // Request data
+            $this->form_data['value'][$field] = $xhr_request[$this->form_data['name'][$field]];
           else
-            $this->form_data['value'][$field] = $provided_data->value->$field;
+            // DB data
+            if (array_key_exists($field, $this->form_data['type']) && $this->form_data['type'][$field] == 'array')
+              $this->form_data['value'][$field] = json_decode($provided_data['value'][$field], true);
+            else $this->form_data['value'][$field] = $provided_data->value->$field;
         }
         else
         {
-          $posted_field = trim($this->CI->input->post($this->form_data['name'][$field]));
+          $posted_field = $this->CI->input->post($this->form_data['name'][$field]);
           if (!empty($posted_field))
+            // Request data
             $this->form_data['value'][$field] = $posted_field;
           else
-            $this->form_data['value'][$field] = $provided_data->value->$field;
+            // DB data
+            if (array_key_exists($field, $this->form_data['type']) && $this->form_data['type'][$field] == 'array')
+              $this->form_data['value'][$field] = json_decode($provided_data['value'][$field], true);
+            else $this->form_data['value'][$field] = $provided_data->value->$field;
         }
-        
+        if (!is_array($this->form_data['value'][$field]))
+          $this->form_data['value'][$field] = trim($this->form_data['value'][$field]);
       }
       if(!empty($provided_data->is_new)) $this->form_data['is_new'] = $provided_data->is_new;
       else $this->form_data['is_new'] = false;
     }
     //var_export($this->form_data);
   }
-  
+ 
   public function validate($custom_config = array())
   {
-    $errors_arr = array();
-    $pass = '';
     if ($this->check_request() === true)
     {
-      foreach($this->form_data['type'] as $key=>$value)
-        switch ($value)
+      foreach($this->form_data['type'] as $key=>$type)
+      {
+        if(!empty($custom_config) && array_key_exists($key, $custom_config) && array_key_exists('type', $custom_config[$key])) $type = $custom_config[$key]['type'];
+
+        if ($this->form_data['type'][$key] == 'array' && is_array($this->form_data['value'][$key]))
         {
-          case 'email':
-              if (strlen($this->form_data['value'][$key]) == 0)
-              {
-                $errors_arr[$this->form_data['caption'][$key]][] = 'empty';
-                break;
-              }
-              if (!preg_match("/.+\@.+\..+/", $this->form_data['value'][$key])) $errors_arr[$this->form_data['caption'][$key]][] = 'not email';
-          break;
-          case 'subdomain':
-              if ($this->form_data['require'][$key] == true && strlen($this->form_data['value'][$key]) == 0)
-              { 
-                $errors_arr[$this->form_data['caption'][$key]][] = 'empty';
-                break;
-              }
-              $this->form_data['value'][$key] = strtolower ($this->form_data['value'][$key]);
-              if (strlen($this->form_data['value'][$key]) > 0 && !preg_match("/^[a-z0-9]+$/", $this->form_data['value'][$key])) $errors_arr[$this->form_data['caption'][$key]][] = 'forbidden chars';
-          break;
-          case 'pass':
-              $pass = $this->form_data['value'][$key];
-              if (strlen($this->form_data['value'][$key]) == 0) $errors_arr[$this->form_data['caption'][$key]][] = 'empty';
-          break;
-          case 're_pass':
-              if (strlen($this->form_data['value'][$key]) == 0)
-              {
-                $errors_arr[$this->form_data['caption'][$key]][] = 'empty';
-                break;
-              }
-              if ($this->form_data['value'][$key] !== $pass) $errors_arr[$this->form_data['caption'][$key]][] = 'password mismatch';
-          break;
-          default:
-              if ($this->form_data['require'][$key] == true && strlen($this->form_data['value'][$key]) == 0)
-              {
-                $errors_arr[$this->form_data['caption'][$key]][] = 'empty';
-                break;
-              }
+          foreach ($this->form_data['value'][$key] as $sub_key=>$sub_value)
+            $this->check_value($key, $sub_value, $type, $sub_key);
         }
-      if (empty($errors_arr)) return true;
+        else $this->check_value($key, $this->form_data['value'][$key], $type);
+      }
+      if (empty($this->errors)) return true;
       else
       {
-        $this->errors = $errors_arr;
         return false;
       }
     }
@@ -219,6 +208,66 @@ class Form_Builder
     {
       $this->errors['Validation'] = 'Wrong request';
       return false;
+    }
+  }
+  
+  protected function check_value($key, $value, $type, $sub_key = null)
+  {
+    $form_field_name = $this->form_data['name'][$key];
+    if ($sub_key!==null) $form_field_name .= "[$sub_key]";
+  
+    $pass = '';
+  
+    switch ($type)
+    {
+      case 'email':
+          if (strlen($value) == 0)
+          {
+            $this->errors[$form_field_name][] = 'empty';
+            break;
+          }
+          if (!preg_match("~^[a-z0-9_\-\.]+@[a-z0-9_\-\.]+\.+?[a-z0-9]+$~i", $value)) $this->errors[$form_field_name][] = 'not email';
+      break;
+      case 'subdomain':
+          if ($this->form_data['require'][$key] == true && strlen($value) == 0)
+          { 
+            $this->errors[$form_field_name][] = 'empty';
+            break;
+          }
+          if (strlen($value) > 60)
+          { 
+            $this->errors[$form_field_name][] = 'too many symbols';
+            break;
+          }
+          $value = strtolower ($value);
+          if (!preg_match("~^(?!xn--)[a-z0-9\_\-]+$~", $value)) $this->errors[$form_field_name][] = 'forbidden chars';
+      break;
+      case 'phone':
+          if ($this->form_data['require'][$key] == true && strlen($value) == 0)
+          {
+            $this->errors[$form_field_name][] = 'empty';
+            break;
+          }
+          if (0 === preg_match("~^[\+]{0,1}[\d]+?[0-9\-]+$~", $value)) $this->errors[$form_field_name][] = 'not phone';
+      break;
+      case 'pass':
+          $pass = $value;
+          if (strlen($value) == 0) $this->errors[$form_field_name][] = 'empty';
+      break;
+      case 're_pass':
+          if (strlen($value) == 0)
+          {
+            $this->errors[$form_field_name][] = 'empty';
+            break;
+          }
+          if ($value !== $pass) $this->errors[$form_field_name][] = 'password mismatch';
+      break;
+      default:
+          if ($this->form_data['require'][$key] == true && strlen($value) == 0)
+          {
+            $this->errors[$form_field_name][] = 'empty';
+            break;
+          }
     }
   }
   
@@ -261,14 +310,33 @@ class Form_Builder
   public function draw_form($view_name = null, &$view_data = null)
   {
     if (!empty($view_data)) $this->form_data = array_merge($this->form_data, $view_data);
-    $view_string = '';
+  
+      
+    foreach ($this->form_data['type'] as $key=>$value)
+    if ($this->form_data['type'][$key]  == 'array')
+    { 
+      if (is_array($this->form_data['value'][$key]))
+      {
+        $final_arr = array();
+        foreach($this->form_data['value'][$key] as $sub_key=>$sub_value)
+        {
+          $final_arr[] = array('index'=>$sub_key, 'value'=>$sub_value);
+        }
+        $this->form_data[$key] = $final_arr;
+        $this->form_data['value'][$key] = '';
+      }
+      
+    }
+  
+    if (!empty($view_name)) $view_string = $this->CI->load->view($view_name, $this->form_data, true);
+    else $view_string = ''; 
+    
     // Пропарсим view на предмет вывода справочника
     if (!empty($this->form_data['dict']) && !empty($view_name))
     {
       $l_d = $this->CI->parser->l_delim;
       $r_d = $this->CI->parser->r_delim;
     
-      $view_string = $this->CI->load->view($view_name, $this->form_data, true);
       foreach ($this->form_data['dict'] as $key=>$val_array)
       { 
         // Set default value
@@ -339,11 +407,6 @@ class Form_Builder
             }
           break;
           
-          case 'array':
-              foreach ($val_array['value'] as $id=>$value)
-              {/*echo($value); echo('<br/>');*/}
-          break;
-          
           case 'multi':
               foreach ($val_array['value'] as $id=>$value)
               {/*echo($value); echo('<br/>');*/}
@@ -351,8 +414,8 @@ class Form_Builder
          }
       }
     }
-    $this->types_transform_to_HTML();
     
+    $this->types_transform_to_HTML();
 
     $this->form_data['dict'] = '';
     
@@ -364,13 +427,11 @@ class Form_Builder
         $this->xhr_answer->errors = $this->errors;
       }
       if (!empty($view_string)) $this->xhr_answer->view = $this->CI->parser->parse_string($view_string, $this->form_data, true);
-      elseif (!empty($view_name)) $this->xhr_answer->view = $this->CI->parser->parse($view_name, $this->form_data, true);
       $this->xhr_answer->send();
     }
     else
     {
       if (!empty($view_string)) return $this->CI->parser->parse_string($view_string, $this->form_data, true);
-      elseif (!empty($view_name)) return $this->CI->parser->parse($view_name, $this->form_data, true);
       else return '';
     }
   }
@@ -381,7 +442,7 @@ class Form_Builder
     foreach ($this->form_data['value'] as $key => $value)
       if ($key !== 'r_only' && $key !== 'owner' && array_key_exists($key, $this->form_data['type']))
         if ($this->form_data['r_only'][$key] !== true)
-          $result .= '\"'.$key.'\":\"'.$value.'\",';
+          $result .= '\"'.$key.'\":\"'.($this->form_data['type'][$key] == 'array'?json_encode($value):$value).'\",';
         
     return $result;
   }
