@@ -46,8 +46,8 @@ class Auth extends Front_Controller
 
         if ($result === false)
         { 
-          if ($this->user->error_code == '-2') $auth_form->errors['user_pass'][] = $this->user->error;
-          if ($this->user->error_code == '-1') $auth_form->errors['user_pass'][] = $this->user->error;
+          if ($this->user->error_code == '-2') $auth_form->errors[$auth_form->name['user_pass']][] = $this->user->error;
+          if ($this->user->error_code == '-1') $auth_form->errors[$auth_form->name['user_pass']][] = $this->user->error;
         }
         else
         {

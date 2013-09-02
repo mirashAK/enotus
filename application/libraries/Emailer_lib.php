@@ -46,7 +46,7 @@ class Emailer_lib
     //$this->lang->load('site/emails', lang());
     $subject = '=?UTF-8?B?' . base64_encode( $this->CI->lang->line('email_restoration_subject')) . "?=";
     
-    $this->view_data['verify_url'] = sub_url('auth/change_pass').$token;
+    $this->view_data['verify_url'] = sub_url('auth/change_pass').'?token='.$token;
     $message = $this->CI->parser->parse('layouts/email/ch_pass_email', $this->view_data, true);
     
     // Sending email

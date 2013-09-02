@@ -4,6 +4,7 @@ class Form_Builder
 {
   protected $form_data = null;
   protected $CI = null;
+  protected $pass = ''; // value for check passwords match
   
   public $xhr_answer = null;
   public $errors = array();
@@ -216,8 +217,6 @@ class Form_Builder
     $form_field_name = $this->form_data['name'][$key];
     if ($sub_key!==null) $form_field_name .= "[$sub_key]";
   
-    $pass = '';
-  
     switch ($type)
     {
       case 'email':
@@ -251,7 +250,7 @@ class Form_Builder
           if (0 === preg_match("~^[\+]{0,1}[\d]+?[0-9\-]+$~", $value)) $this->errors[$form_field_name][] = 'not phone';
       break;
       case 'pass':
-          $pass = $value;
+          $this->pass = $value;
           if (strlen($value) == 0) $this->errors[$form_field_name][] = 'empty';
       break;
       case 're_pass':
@@ -260,7 +259,7 @@ class Form_Builder
             $this->errors[$form_field_name][] = 'empty';
             break;
           }
-          if ($value !== $pass) $this->errors[$form_field_name][] = 'password mismatch';
+          if ($value !== $this->pass) $this->errors[$form_field_name][] = 'password mismatch';
       break;
       default:
           if ($this->form_data['require'][$key] == true && strlen($value) == 0)

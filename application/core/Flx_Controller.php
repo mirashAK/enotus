@@ -82,11 +82,11 @@ class Default_Controller extends Flx_Controller
       parent::__construct();
       $this->load->database('default');
       $this->load->library('user_lib', array(), 'user');
-      $this->set_language($this->user->user_public->u_lang);
+      $this->set_language(/*$this->user->user_public->u_lang*/);
       $this->load->model('auth_mdl');
       
       // Check security
-     // if (false === $this->input->is_ajax_request() && false === $this->auth_mdl->check_route_permission(uri_string())) $this->redirect(base_url());
+      if (false === $this->input->is_ajax_request() && false === $this->auth_mdl->check_route_permission(uri_string())) $this->redirect(base_url());
       
       $this->view_data['base_url'] = base_url();
       $this->view_data['sub_url'] = sub_url();
@@ -101,7 +101,7 @@ class Test_Controller extends Flx_Controller
       parent::__construct();
       $this->load->database('test');
       $this->load->library('user_lib', array(), 'user');
-      $this->set_language($this->user->user_public->u_lang);
+      $this->set_language(/*$this->user->user_public->u_lang*/);
       $this->view_data['base_url'] = base_url();
       $this->view_data['sub_url'] = sub_url();
       $this->view_data['res_url'] = res_url();
@@ -133,6 +133,7 @@ class Front_Controller extends Default_Controller
      
       $this->load->library('menu_lib');
       
+      $this->view_data['transl'] = $this->lang->language; // Translation array
       $this->view_data['lang'] = lang();
 
       $this->view_data['site_title'] = '';

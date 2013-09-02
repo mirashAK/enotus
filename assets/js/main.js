@@ -77,7 +77,6 @@
             else if (answer.view !== false && reload_container) {
               reload_container.html(answer.view);
             }
-
             success_send(form);
           }
           else
@@ -202,6 +201,11 @@
           $(this).removeAttr('data-valid');
         }
       });
+    },
+    success_send: function (form)
+    {
+      var modal = $('#modal-change-password');
+      if (modal.length) modal.modal('hide'); 
     }
   });
   
@@ -229,6 +233,31 @@
     }
   });
   
+  App.Forms_sender(
+  {
+    form_name: 'user_settings_form',
+    reload_container: '#login_replace',
+    on_key_press: function (event) { $(event.target).removeClass('error'); },
+    on_error: function (elem, errors)
+    {
+      elem.wrap(wrapper).after(errorPlace.clone().html(errors));
+      elem.attr('data-valid', "false");
+    },
+    before_send: function (form, xhr)
+    {
+      form.find("input[type='password'], input[type='text'], input[type='email']").each(function()
+      {
+        if($(this).next('.form-error').length)
+        {
+          $(this).next('.form-error').remove();
+          $(this).unwrap('.form-error-wrap');
+          $(this).removeAttr('data-valid');
+        }
+      });
+    },
+    success_send: function (form) { $('#modal-country').modal('hide'); $('#user_country').html($("#deal-country option:selected").text()); userOptionsDropdown(); },
+  });
+
   /**
    * Определения  форм
    */

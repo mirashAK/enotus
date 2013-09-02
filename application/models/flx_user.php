@@ -81,13 +81,17 @@ class Flx_User extends Flx_Model
   
   public function token_passwd($user_email)
   {
-    $sql = "SELECT token_passwd (?) AS 'token' ;";
+    $sql = "SELECT token_passwd (?) AS 'answer' ;";
     $first_result = $this->db->query($sql, array($user_email));
     
     if (!empty($first_result) && $first_result->num_rows() == 1)
     {
+      // Получаем результат запроса стандартным методом CI
       $first_result = $first_result->row_array();
-      return $first_result['token'];
+      $first_result = json_decode($first_result['answer'], true);
+      
+      if (array_key_exists('error_code', $first_result)) return $first_result['error_code'];
+      else return $first_result['confirm_token'];
     }
     else return false;
   }
