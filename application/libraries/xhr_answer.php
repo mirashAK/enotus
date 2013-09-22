@@ -10,12 +10,13 @@ class Xhr_Answer
     $this->answer_data['errors'] = array();
     $this->answer_data['view'] = false;
     $this->answer_data['redirect']= false;
+    $this->answer_data['update']= false;
+    $this->answer_data['message']= false;
   }
   
   public function send()
   {
     echo (json_encode($this->answer_data));
-    exit ();
   }
   
   public function __set($name, $value)

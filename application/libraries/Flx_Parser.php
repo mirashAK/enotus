@@ -50,4 +50,25 @@ class Flx_Parser extends CI_Parser
 
         return str_replace($match['0'], $str, $string);
     }
+    
+    /**
+     *  Parse a single key/value
+     *
+     * @access  private
+     * @param   string
+     * @param   string
+     * @param   string
+     * @return  string
+     */
+    function _parse_single($key, $val, $string)
+    {   
+//         if (is_array($key) || is_array($val) || is_array($string))
+//         {
+//           echo("<br/>\n");
+//           echo ('key:'); var_export($key); echo("<br/>\n");
+//           echo ('val:'); var_export($val); echo("<br/>\n");
+//           echo ('string:'); var_export(htmlentities($string)); echo("<br/>\n");
+//         }
+        return str_replace($this->l_delim.$key.$this->r_delim, $val, $string);
+    }
 }

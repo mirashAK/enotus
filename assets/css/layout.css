@@ -78,12 +78,13 @@ html, body {
     margin-top: 3px;
 }
 .main-nav {
-    width: 100%;
+    /*width: 100%;*/
+    float: right;
 }
 .main-nav-list {
     font-size: 0;
     line-height: 0;
-    width: 636px;
+    /*width: 636px;*/
 }
 .main-nav-item {
     display: inline-block;
@@ -137,7 +138,7 @@ html, body {
     border-radius: 0 5px 5px 0;
 }
 
-.main-nav-list .last {width: 217px;}
+/*.main-nav-list .last {width: 217px;}*/
 
 .main-nav-item > a {
     text-decoration: none;

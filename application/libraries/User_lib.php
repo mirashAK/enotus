@@ -5,6 +5,9 @@ class User_lib
   public $user_token = null;
   public $user_ip = null;
   public $user_last_activity = null;
+  public $user_public = null;
+  public $error_code = false;
+  public $error = false;
   
   public function __construct()
   {
@@ -26,7 +29,12 @@ class User_lib
       $this->_set_values();
       return true;
     }
-    else return $this->flx_user_mdl->get_error_text($new_token, 'flx_do_auth');
+    else
+    {
+      $this->error_code = $new_token;
+      $this->error = $this->flx_user_mdl->get_error_text($new_token, 'flx_do_auth');
+      return false;
+    }
   }
   
   public function add_user ($email, $pass, $login = '', $user_data = array())
@@ -58,7 +66,7 @@ class User_lib
         
         if (array_key_exists('user_id', $result))
         { // Insert data into public_users table
-          $this->flx_user_mdl->save_public_user($result['user_token'], $this->user->user_ip, $result['user_id'], json_decode($this->encrypt->decode($result['user_data']),true));
+          $this->flx_user_mdl->save_public_user($this->user_token, $this->user_ip, $result['user_id'], json_decode($this->encrypt->decode($result['user_data']),true));
         }
         return true;
       }
@@ -128,10 +136,17 @@ class User_lib
     $this->user_last_activity = $this->user_session->sess_last_activity;
     
     if ($this->user_id > 0)
-      $this->user_public =  $this->flx_user_mdl->get_public_user_data($this);
-      
+      $this->user_public =  new safeClass($this->flx_user_mdl->get_public_user_data($this));
+    else
+      $this->user_public =  new safeClass();
     unset($result);
   }
+  
+  public function save_public ()
+  {
+    if ($this->user_id > 0) $this->flx_user_mdl->save_public_user($this->user_token, $this->user_ip, $this->user_id, (array)$this->user_public, $this->user_id);
+  }
+  
   
   /**
     * __get

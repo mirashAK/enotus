@@ -1,9 +1,8 @@
-
 (function ($) {
   'use strict';
 
   window.App = window.App || {};
-
+  
   /**
    * Определение отправщика формы
    */
@@ -17,6 +16,25 @@
       if (result.length === 0) { return false; }
       else { return result; }
     };
+    
+    var prep_form_data = function (form)
+    {
+      var a = [];
+      $(form).
+      find("input[type='checkbox']:checked, input[type='file'], input[type='hidden'], input[type='password'], input[type='radio']:checked, input[type='text'], textarea, select").
+      each(function(){
+          if(this.tagName == 'SELECT' && $(this).attr('multiple') == true) {
+              var select_name = this.name;
+              $(this).find('option:selected').each(function(){
+                  a.push(select_name+'[]=' + this.value);
+              })
+          } else {
+              var content = $(this).hasClass('tiny-mce') ? tinyMCE.get($(this).attr('id')).getContent() : this.value;
+              a.push(this.name + '=' + encodeURIComponent(content));
+          }
+      });
+      return a.join('&');
+    }
 
     $(form).on('submit', function (e)
     {
@@ -24,15 +42,16 @@
 
       // Формируем данные для отправки, чтобы они передавались как единственный параметр
       var data = {};
-      data[form.attr('name')] = form.serialize();
+      data[form.attr('name')] = prep_form_data(form);
+      //form.serialize();
 
       // Адрес action формируется в контроллере при создании формы и выводится во view шаблона формы
       var url = form.attr('action');
 
       // Контейнер используем для замены его содержимого кодом HTML, сформированным после обработки формы
-      var reload_container = form_data.reload_container || '.'+form.attr('name')+'_reload_container';
-      reload_container = check_result(form.parents(reload_container).first()) || false;
-
+      var reload_container = form_data.reload_container || '#'+form.attr('name')+'_reload_container';
+      reload_container = check_result($(reload_container).first()) || false;
+      
       var before_send = form_data.before_send || function(){};
       var after_send = form_data.after_send || function(){};
       var success_send = form_data.success_send || function(){};
@@ -49,13 +68,15 @@
         {
           if (answer.valid === true)
           {
+            // Меняем значения полей, например при добавлении новой записи
+            if (answer.update !== false)
+              jQuery.each(answer.update, function (name, value) { form.find('[name="'+name+'"]').val(value); });
             // Сервер в ответе выдаёт либо адрес редиректа
             if (answer.redirect !== false) { window.location = answer.redirect; }
             //  либо код HTML, который нужно поместить на место формы (в reload_container)
             else if (answer.view !== false && reload_container) {
               reload_container.html(answer.view);
             }
-
             success_send(form);
           }
           else
@@ -63,8 +84,8 @@
             for ( var name in answer.errors )
             {
               if ( answer.errors.hasOwnProperty(name) ) {
-                // Имена элементов массива с ошибками соответствуют либо name поля ввода либо его id
-                var elem = check_result(form.find('[name="'+name+'"]')) || check_result(form.find('#'+name));
+                // Имена элементов массива с ошибками соответствуют name поля ввода
+                var elem = check_result(form.find('[name="'+name+'"]'));
                 if (elem && form_data.on_error)
                 {
                   form_data.on_error(elem, answer.errors[name]);
@@ -74,28 +95,23 @@
             }
           }
         },
-        error: function(e)
-        {
-          console.log("error"+e);
-
-          // demo
-          if (url === '#') {
-            setTimeout(function() {
-              success_send(form);
-            }, 800);
-          }
-        }
+        error: function(e) { console.log("error"+e); },
+      // After send event
       }).always(function() { after_send (form); });
     });
   };
+  
+  /**
+   * Определения  форм
+   */
 
-    var wrapper = $('<div class="form-error-wrap"></div>');
-    var errorPlace = $('<div class="form-error"></div>');
- 
+  var wrapper = $('<div class="form-error-wrap"></div>');
+  var errorPlace = $('<div class="form-error"></div>');
+
   App.Forms_sender(
   {
     form_name: 'auth_form',
-    reload_container: '#modal-registration',
+    reload_container: '#login_replace',
     on_key_press: function (event) { $(event.target).removeClass('error'); },
     on_error: function (elem, errors)
     {
@@ -114,6 +130,7 @@
         }
       });
     },
+    success_send: function (form) { $('#modal-login').modal('hide'); userOptionsDropdown(); },
     after_send: function (form) { }
   });
     
@@ -138,11 +155,139 @@
           $(this).removeAttr('data-valid');
         }
       });
+    }
+  });
+  
+  App.Forms_sender(
+  {
+    form_name: 'ch_pass_email_form',
+    on_key_press: function (event) { $(event.target).removeClass('error'); },
+    on_error: function (elem, errors)
+    {
+      elem.wrap(wrapper).after(errorPlace.clone().html(errors));
+      elem.attr('data-valid', "false");
     },
-    after_send: function (form) { }
+    before_send: function (form, xhr)
+    {
+      form.find("input[type='password'], input[type='text'], input[type='email']").each(function()
+      {
+        if($(this).next('.form-error').length)
+        {
+          $(this).next('.form-error').remove();
+          $(this).unwrap('.form-error-wrap');
+          $(this).removeAttr('data-valid');
+        }
+      });
+    }
+  });
+  
+  App.Forms_sender(
+  {
+    form_name: 'ch_pass_form',
+    on_key_press: function (event) { $(event.target).removeClass('error'); },
+    on_error: function (elem, errors)
+    {
+      elem.wrap(wrapper).after(errorPlace.clone().html(errors));
+      elem.attr('data-valid', "false");
+    },
+    before_send: function (form, xhr)
+    {
+      form.find("input[type='password'], input[type='text'], input[type='email']").each(function()
+      {
+        if($(this).next('.form-error').length)
+        {
+          $(this).next('.form-error').remove();
+          $(this).unwrap('.form-error-wrap');
+          $(this).removeAttr('data-valid');
+        }
+      });
+    },
+    success_send: function (form)
+    {
+      var modal = $('#modal-change-password');
+      if (modal.length) modal.modal('hide'); 
+    }
+  });
+  
+  App.Forms_sender(
+  {
+    form_name: 'company_settings_form',
+    reload_container: '#phones-rows',
+    on_key_press: function (event) { $(event.target).removeClass('error'); },
+    on_error: function (elem, errors)
+    {
+      elem.wrap(wrapper).after(errorPlace.clone().html(errors));
+      elem.attr('data-valid', "false");
+    },
+    before_send: function (form, xhr)
+    {
+      form.find("input[type='password'], input[type='text'], input[type='email']").each(function()
+      {
+        if($(this).next('.form-error').length)
+        {
+          $(this).next('.form-error').remove();
+          $(this).unwrap('.form-error-wrap');
+          $(this).removeAttr('data-valid');
+        }
+      });
+    }
+  });
+  
+  App.Forms_sender(
+  {
+    form_name: 'user_settings_form',
+    reload_container: '#login_replace',
+    on_key_press: function (event) { $(event.target).removeClass('error'); },
+    on_error: function (elem, errors)
+    {
+      elem.wrap(wrapper).after(errorPlace.clone().html(errors));
+      elem.attr('data-valid', "false");
+    },
+    before_send: function (form, xhr)
+    {
+      form.find("input[type='password'], input[type='text'], input[type='email']").each(function()
+      {
+        if($(this).next('.form-error').length)
+        {
+          $(this).next('.form-error').remove();
+          $(this).unwrap('.form-error-wrap');
+          $(this).removeAttr('data-valid');
+        }
+      });
+    },
+    success_send: function (form) { $('#modal-country').modal('hide'); $('#user_country').html($("#deal-country option:selected").text()); userOptionsDropdown(); },
   });
 
+  /**
+   * Определения  форм
+   */
+  
+  
+var addPhone = function() 
+{
+  $('#add-phone').click(function(event)
+  {
+    event.preventDefault();
+
+    var adderLink = $(this);
+    var container = $('#phones-rows');
+    
+    jQuery.ajax(
+    {
+      url: SUBURL+'/user/xhr_add_company_phone',
+      type: 'get',
+      dataType: 'json',
+      success: function(answer) { if (answer.view !== false) container.html(answer.view); },
+      error: function(e){console.log("error"+e); }     
+    });
+  });
+};
+addPhone(); 
+  
+
 })(jQuery);
+
+
 // ---------------------------------------------------------------------
 var jsValidation = function() {
     var
@@ -315,7 +460,7 @@ var searchPane = function() {
 searchPane();
 
 
-var userOptionsDropdown =function() {
+var userOptionsDropdown = function() {
     $('.user-link-wrap').click(function(event) {
         event.preventDefault();
 
@@ -372,29 +517,6 @@ var userOptionsDropdown =function() {
     });
 };
 userOptionsDropdown();
-
-
-var addPhone = function() {
-    $('#add-phone').click(function(event) {
-        event.preventDefault();
-
-
-        var adderLink, adderRow, htmlToAdd;
-        adderLink = $(this);
-        adderRow = adderLink.closest('.control-row');
-        htmlToAdd = '<div class="control-row add-phone-row">' +
-                        '<div class="control-cell">' +
-                            '<label>' +
-                                'Контактный телефон:<br>' +
-                                '<input type="text" name="contact_phone[]" class="text phone" value="+38">' +
-                            '</label>' +
-                        '</div>' +
-                    '</div>';
-        adderRow.before(htmlToAdd);
-    });
-};
-addPhone();
-
 
 var services = function() {
     $('#js-add-link').click(function(event) {

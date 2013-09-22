@@ -73,6 +73,10 @@
     width: 234px !important;
 }
 
+.modal.modal-country, .modal.modal-change-password {
+    width: auto;
+}
+
 .modal.modal-rules.fade.in {
     top: 2%;
 }

@@ -272,9 +272,9 @@
                         <div class="_cfix"></div>
 
 
-                    </div>
-                </div>
-            </div>
+                    </div><!--<div class="container">-->
+                </div><!--<div class="app-content-inner">-->
+            </div><!--<div class="app-content">-->
             <!-- ] application content -->
 
 

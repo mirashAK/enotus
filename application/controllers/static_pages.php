@@ -5,7 +5,6 @@ class Static_pages extends Front_Controller {
   function __construct() {
       parent::__construct();
      $this->load->model('static_pages_model', 'model');
-     $this->load->model('main_menu_model', 'main_menu');
   }
 
   public function _remap($method)
@@ -15,7 +14,7 @@ class Static_pages extends Front_Controller {
     if (!empty($method))
     {
       $page = $this->model->get_page($method, $this->user);
-      $main_menu = $this->main_menu->get_main_menu($this->user);
+      $main_menu = $this->main_menu->get_main_menu();
     }
 
     if (empty($page)) redirect('home');

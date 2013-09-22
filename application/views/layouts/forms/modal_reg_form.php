@@ -35,7 +35,7 @@
                     </label>
                     <!--<select name="deal_country" >-->
                     <select name="{name:u_f_country}" id="deal-country">
-                      <option id="{id:u_f_country}" value="{value:u_f_country}" {selected:u_f_country}>{caption:u_f_country}</option>
+                      <option id="{id:u_f_country}" value="{value:u_f_country}" {selected:u_f_country}>{transl:country_{caption:u_f_country}}</option>
                     </select>
                 </div>
             </div>

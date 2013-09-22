@@ -7,8 +7,7 @@ class Auth extends Front_Controller
     parent::__construct();
 
       $this->load->model('users_mdl');
-      $this->load->model('auth_mdl');
-      
+      $this->load->library('emailer_lib', array(), 'emailer');
   }
 
   public function xhr_reg()
@@ -17,28 +16,25 @@ class Auth extends Front_Controller
     $reg_form->form_data = $this->auth_mdl->get_user_reg_signature();
     if ($reg_form->validate() == true)
     { 
-      $token = $this->user->add_user($reg_form->user_email, $reg_form->user_pass, '', array('u_f_country'=>$reg_form->u_f_country, 'u_name'=>$reg_form->u_name));
-      $this->_send_registration_email($reg_form->user_email, $token);
-      //$reg_form->xhr_answer->view = 
+      $token = $this->user->add_user($reg_form->user_email, $reg_form->user_pass, $reg_form->user_email, array('u_f_country'=>$reg_form->u_f_country, 'u_name'=>$reg_form->u_name, 'u_lang'=>lang()));
+      $this->emailer->send_registration_email($reg_form->user_email, $token);
+      $this->view_data['user_email'] = $reg_form->user_email;
+      $reg_form->xhr_answer->view = $this->parse_in('layouts/messages/modal_reg_success_mess');
     }
-    else
-    {
-    }
-      
     $reg_form->draw_form();
   }
 
   public function reg()
   {
-    if ($this->input->get('token') == false) redirect(sub_url(), 'refresh');
+    if ($this->input->get('token') == false) $this->redirect(sub_url());
 
     $result = $this->user->reg_user();
     
     if ($result !== false)
     {
-
+      $this->redirect(sub_url());
     }
-    else redirect(sub_url(), 'refresh');
+    else $this->redirect(sub_url());
   }
   
   public function xhr_auth()
@@ -49,33 +45,80 @@ class Auth extends Front_Controller
         $result = $this->user->do_auth($auth_form->user_email, $auth_form->user_pass);
 
         if ($result === false)
-        {
-          if ($this->user->error_code == '-2') $form->errors['password'][] = $this->user->error;
-          if ($this->user->error_code == '-1') $form->errors['password'][] = $this->user->error;
+        { 
+          if ($this->user->error_code == '-2') $auth_form->errors[$auth_form->name['user_pass']][] = $this->user->error;
+          if ($this->user->error_code == '-1') $auth_form->errors[$auth_form->name['user_pass']][] = $this->user->error;
         }
-        else $auth_form->xhr_answer->redirect = sub_url();
+        else
+        {
+          // Create header controls
+          $this->view_data['main_menu_items'] = $this->menu_lib->create_main_menu();
+          $this->view_data['user_menu_items'] = $this->menu_lib->create_user_menu();
+          $this->view_data['user_public'] = (array)$this->user->user_public;
+          $this->view_data['user_controls_panel'] = $this->parse_in(lang().'/header_user_reg_view'); 
+          $auth_form->xhr_answer->view = $this->parse_in(lang().'/header_inside_view');
+        }
     }
     $auth_form->draw_form();
+  }
+  
+  public function logout()
+  {
+    $this->user->logout();
+    $this->redirect(sub_url());
+  }
+  
+  public function restoration()
+  {
+    $this->view_data['site_title'] = $this->lang->line('title_auth_restoration');
     
+    $res_pass_form = Form_Builder::factory('ch_pass_email_form', sub_url('auth/xhr_send_ch_pass_email'));
+    
+    $this->view_data['site_body'] = $res_pass_form->draw_form('layouts/forms/ch_pass_email_form', $this->view_data);
+    
+    $this->parse_out('main_view');
   }
 
-  private function _send_registration_email ($email, $token)
- {
-    //$this->lang->load('site/emails', lang());
-    $subject = '=?UTF-8?B?' . base64_encode( $this->lang->line('restoration_email_subject')) . "?=";
+  public function xhr_send_ch_pass_email()
+  { 
+    $res_pass_form = Form_Builder::factory('ch_pass_email_form');
     
-    $this->view_data['verify_url'] = sub_url('auth/reg').'?token='.$token;
-    $message = $this->parse_in('layouts/email/reg_email');
+    if ($res_pass_form->validate() == true)
+    { 
+      $token = $this->user->token_passwd($res_pass_form->user_email);
+      $this->emailer->send_ch_pass_email($res_pass_form->user_email, $token);
+      $this->view_data['user_email'] = $res_pass_form->user_email;
+      $res_pass_form->xhr_answer->view = $this->parse_in('layouts/messages/ch_pass_email_mess');
+    }
+    $res_pass_form->draw_form();
+  }
+  
+  public function change_pass()
+  {
+    if ($this->input->get('token') == false) $this->redirect(sub_url('auth/restoration'));
+    $this->user_session->pass_reset_token = $this->input->get('token');
+  
+    $this->view_data['site_title'] = $this->lang->line('title_auth_change_pass');
     
-    // Headers
-    $headers = 'MIME-Version: 1.0' . "\r\n";
-    $headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
-    $headers .= 'Content-Transfer-Encoding: 8bit' . "\r\n";
-    $headers .= 'From: Startask <invite@startask.com>' . "\r\n";
-    $headers .= "Reply-To: invite@startask.com\r\n";
+    $res_pass_form = Form_Builder::factory('ch_pass_form', sub_url('auth/xhr_ch_pass'));
+    
+    $this->view_data['site_body'] = $res_pass_form->draw_form('layouts/forms/ch_pass_form', $this->view_data);
+    
+    $this->parse_out('main_view');
+  }
+  
+  public function xhr_ch_pass()
+  { 
+    if ($this->user_session->pass_reset_token == false) $this->redirect(sub_url('auth/restoration'));
 
-    // Sending email
-    mail($email, $subject, $message, $headers);
- }
-
+    $res_pass_form = Form_Builder::factory('ch_pass_form');
+    
+    if ($res_pass_form->validate() == true)
+    { 
+      $this->user->reset_passwd($this->user_session->pass_reset_token, $res_pass_form->user_pass);
+      $res_pass_form->xhr_answer->redirect = sub_url();
+      $this->user_session->pass_reset_token = '';
+    }
+    $res_pass_form->draw_form();
+  }
 }
